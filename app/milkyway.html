@@ -30,8 +30,9 @@
 		<option value="dictArray_t" >barrister</option>
 	    </select></center>
 	<textarea id="maininput">
+*** You do the reading, we do the checking!
 
- ====  Paste English Articles Here ====>
+ ====  Paste English Text Here ====>
 
 It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope,it was the winter of despair, we had everything before us, we had nothing before us, we were all going direct to Heaven, we were all going direct the other way—in short, the period was so far like the present period, that some of its noisiest authorities insisted on its being received, for good or for evil, in the superlative degree of comparison only.
 
@@ -45,7 +46,7 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	</textarea>
 	<input type="button" class="colorful-button" value="Paste text above and click me" id="main-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 	<input type="button" class="colorful-button" value="List Words" id="show-answer" style="margin:5px" onkeydown="document.body.onkeydown" /> 
-	<input type="button" class="colorful-button" value="Cloze Excise" id="excise-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
+	<input type="button" class="colorful-button" value="Cloze excise" id="excise-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 
 	<div id="demo-container" class="demo-container">
 	    <div id="text-container" style="position:absolute;width:65%;height:93vh;overflow-y:scroll;"   class="demo-area">
@@ -294,7 +295,7 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 
 	 function elemCover(elem, head=1, tail=1 ){
 	     var s = allFiller.wordDict[elem.id].inText
-	     elem.innerHTML="<span style=\"color:red\">" + tailCover(s, head, tail) + "<\span>"
+	     elem.innerHTML="<span style=\"color:#fc2200\">" + tailCover(s, head, tail) + "<\span>"
 	 }
 	 function coverAll(allFiller1=allFiller){
 	     for (o of fillObjs){
@@ -339,18 +340,16 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	 function elemBring(o, reserve=50){
 	     var t = o.offsetTop - o.parentNode.offsetTop;
 	     demo.parentNode.scrollTop = t-reserve
-	     if (o.className!= "word-filler-done"){
-		 elemClear(o)
-		 elemExplain(o)
-	     }
-	     else
-		 elemExplain(o, false)
-	 }
-	 function elemClear(o,head=excise_cheat1, tail=excise_cheat2){
 	     o.className="word-filler-current"
+	     elemExplain(o)
+	 }
+	 
+	 function elemClear(o,head=excise_cheat1, tail=excise_cheat2){
 	     currentInput=""
 	     elemCover(o, head, tail)
+	     elemBring(o)
 	 }
+	 
 	 function elemFill(elem, s){
 	     var info = elemInfo(elem)
 	     var inText = info.inText
@@ -359,15 +358,37 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	     covered = covered.slice(s.length)
 	     elem.innerHTML =  s + covered
 	     if (s == inText.toLowerCase()){
-		 console.log(s, " == ", inText.toLowerCase())
-		 elem.className="word-filler-done"
-		 elemReveal(elem)
-		 elemExplain(elem, false)
+		 elemModify(elem)
+	     }
+	     else{
+		 elemExplain(elem)
+	     }
+	 }
+
+	 function elemCheck(e){
+	     var info=elemInfo(e);
+	     var inText=info.inText;
+	     return e.innerHTML.toLowerCase() == inText.toLowerCase()
+	 }
+	 function elemModify(e, inFilling=true){
+	     if (! elemCheck(e)){
+		 if (inFilling){
+		     e.className="word-filler-current"
+		     elemExplain(e)
+		 }
+		 else
+		     e.className="word-filler"
+		 return false;
+	     }
+	     else {
+		 e.className="word-filler-done"
+		 elemReveal(e)
+		 elemExplain(e, false)
 		 return true
 	     }
-	     else
-		 return false
 	 }
+		 
+		 
  
 	 function fillCurrent(){
 	     var elem = fillObjs[currentFill]
@@ -381,14 +402,13 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	     coverAll()
 	     fillCurrent()
 	     fillObjs.forEach(e=>{e.className="word-filler"})
-	     alert("Finish the cloze with keyboard. Press: \n ; / 5 to move next/previous. \n BACKSPACE to clear the buffer,\n  1 / ENTER to show the partial / full solution of the blank!")
+	     alert("Finish the cloze with keyboard. Press: \n ; / SHIFT to move forth/back. \n BACKSPACE to clear the buffer,\n  1 / ENTER to show the partial / full solution of the blank!")
 	 }
 	 document.getElementById("excise-clicker").onclick=startFill
  
 	 function fillNext(){
 	     var elem0  = fillObjs[currentFill]
-	     if (elem0.className != "word-filler-done")
-		 elem0.className = "word-filler"
+	     elemModify(elem0, false)
 	     currentFill = ( currentFill+1 ) % fillObjs.length
 	     currentInput=""
 	     var elem = fillObjs[currentFill]
@@ -397,8 +417,7 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
  
 	 function fillPrevious(){
 	     var elem0  = fillObjs[currentFill]
-	     if (elem0.className != "word-filler-done")
-		 elem0.className = "word-filler"
+	     elemModify(elem0, false)
 	     currentFill = ( currentFill-1 + fillObjs.length) % fillObjs.length
 	     currentInput=""
 	     var elem = fillObjs[currentFill]
@@ -420,13 +439,17 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	     }
 	     if (65<=e.keyCode && e.keyCode <= 90)
 		 charAdder(k2char(e.keyCode))
-	     else if (e.keyCode==53)
+	     else if (e.keyCode==16)
 		 fillPrevious()
 	     else if (e.keyCode==186)
 		 fillNext()
 	     else if (e.keyCode==8){
-		 elemBring(fillObjs[currentFill])
 		 elemClear(fillObjs[currentFill])
+		 elemBring(fillObjs[currentFill])
+	     }
+	     else if (e.keyCode==53){
+		 elemReveal(fillObjs[currentFill])
+		 elemExplain(fillObjs[currentFill], false)
 	     }
 	     else if (e.keyCode==13)
 		 elemExplain(fillObjs[currentFill], false)
