@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<meta charset="utf-8">
+	<title id="title">Milkyway - Awesome AI-Aided Language Skill Enhancement</title>
+	<link rel="stylesheet" href="app/milkyway.css" type="text/css"/>
+	<script src="app/dictArray.js"></script>
+	<script src="app/dictArray_t.js"></script>
+	<script src="app/rules.js"></script>
+	<script>
+       	    document.oncontextmenu = function (event) {
+		event.preventDefault();
+            };
+	    var cookable={}
+	    var cookedRecords = document.cookie.split(";")
+	    if (cookedRecords[0].length>0){
+		cookable = JSON.parse(cookedRecords[0])
+	    }
+	</script>
+
+    </head>
+    <body class="body"> 
+	<center><h1>Milkyway - A Cloze Practice Website</h1></center>
+	<center>Your English level:
+	    <select id="nonsense-voting" style="background:lightblue">
+		<option value="dictArray_t" >tem-8</option>
+		<option value="dictArray" selected="selected" >cet-6</option>
+		<option value="dictArray_t" >tofel</option>
+		<option value="dictArray_t" >ielts</option>
+		<option value="dictArray_t" >barrister</option>
+	    </select></center>
+	<textarea id="maininput">
+
+ ====  Paste English Articles Here ====>
+
+It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope,it was the winter of despair, we had everything before us, we had nothing before us, we were all going direct to Heaven, we were all going direct the other way—in short, the period was so far like the present period, that some of its noisiest authorities insisted on its being received, for good or for evil, in the superlative degree of comparison only.
+
+There were a king with a large jaw and a queen with a plain face, on the throne of England; there were a king with a large jaw and a queen with a fair face, on the throne of France. In both countries it was clearer than crystal to the lords of the State preserves of loaves and fishes, that things in general were settled for ever. 
+
+It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritual revelations were conceded to England at that favoured period, as at this. Mrs. Southcott had recently attained her five-and-twentieth blessed birthday, of whom a prophetic private in the Life Guards had heralded the sublime appearance by announcing that arrangements were made for the swallowing up of London and Westminster. Even the Cock-lane ghost had been laid only a round dozen of years, after rapping out its messages, as the spirits of this very year last past (supernaturally deficient in originality) rapped out theirs. Mere messages in the earthly order of events had lately come to the English Crown and People, from a congress of British subjects in America:4 which, strange to relate, have proved more important to the human race than any communications yet received through any of the chickens of the Cock-lane brood. 
+
+
+
+
+	</textarea>
+	<input type="button" class="colorful-button" value="Paste text above and click me" id="main-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
+	<input type="button" class="colorful-button" value="List Words" id="show-answer" style="margin:5px" onkeydown="document.body.onkeydown" /> 
+	<input type="button" class="colorful-button" value="Cloze Excise" id="excise-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
+
+	<div id="demo-container" class="demo-container">
+	    <div id="text-container" style="position:absolute;width:65%;height:93vh;overflow-y:scroll;"   class="demo-area">
+		<div id="demo" style="width:100%; border=solid 1px gray" class="demo-area">
+		</div>
+	    </div>
+	    <div id="explain-container" , style="position:absolute; left:65%; right:1%" class="demo-area">
+	    <div id="explain-head" class="demo-area">
+	    </div>
+	    <div id="explain-area" style="" class="demo-area">
+	    </div>
+	    </div>
+	</div>
+
+
+
+	<script>
+	 // Your code here...
+	 var demo = document.getElementById("demo")
+
+	 var allFiller=new Object();
+	 var fillObjs=new Array();
+	 var wordSet=[]
+	 var state_in_excise=false
+
+	 var excise_cheat1=0
+	 var excise_cheat2=1
+	 var remove_dup=true
+
+	 
+
+	  
+
+	 var fillIn = function(nLast, n, l, s, label="word-filler"){
+             var insThis = document.createElement("span")
+	     var orgWord=s.slice(n,n+l)
+             insThis.className=label
+             insThis.id=label+"-"+n
+	     insThis.innerHTML=orgWord
+             var s1 = s.slice(nLast, n) + insThis.outerHTML
+             var res = new Object()
+             res.objId = insThis.id
+	     res.inText=orgWord
+             res.enlonged = s1
+             return res
+	 }
+	 var fillAll = function(s, words){
+             var res = new Object()
+             res.wordList = []
+             var sorted = words.sort((a,b)=>(a[0]>=b[0]))
+             var nLast=0
+             var s1=""
+             for (var i in sorted){
+		 var n = sorted[i][0]
+		 var l = sorted[i][1]
+		 var wd = sorted[i][2]
+		 var iRes = fillIn(nLast, n, l, s)
+		 s1 = s1 + iRes.enlonged
+		 delete iRes.enlonged
+		 res.wordList.push(iRes)
+		 nLast=n + l
+             }
+             res.enlonged = s1 + s.slice(nLast)
+	     res.enlonged = res.enlonged.split("\n").join("<br>")
+             return res;
+	 }
+	 // fillAll with labels...
+	 var fillAllLabeled = function(s, words){
+             var res = new Object()
+             var wordList = []
+             var sorted = words.sort((a,b)=>(a[0]>=b[0]))
+             var nLast=0
+             var s1=""
+             for (var i in sorted){
+		 var n = sorted[i][0]
+		 var l = sorted[i][1]
+		 var voc= sorted[i][2]
+		 var label=sorted[i][3]
+		 var iRes
+		 if (label)
+		     iRes=fillIn(nLast, n, l, s, label)
+		 else
+		     iRes=fillIn(nLast, n, l, s)
+		 iRes.voc=voc
+		 s1 = s1 + iRes.enlonged
+		 wordList.push(iRes)
+		 nLast=n + l
+             }
+             res.enlonged = s1 + s.slice(nLast)
+	     res.enlonged = res.enlonged.split("\n").join("<br>")
+
+	     wordDict=new Object()
+	     for (w of wordList)
+		 wordDict[w.objId] = w
+	     res.wordDict=wordDict
+             return res;
+	 }
+
+	 var s = document.getElementById("maininput").value
+	 var words1 = allWords(s)
+	 function allWords(s){
+             var reWord=/[a-zA-Z][a-zA-Z']+/g;
+             var iterAll = s.matchAll(reWord)
+             var words=[]
+             for (var w of iterAll){
+		 words.push([w.index, w[0].length, w[0]])
+             }
+             return words
+	 }
+	 
+	 function useRule(s, r, st=[], last=new Object()){
+	     if (r.length==0)
+		 return s
+             else if (!s || s.length==0)
+		 return null
+             else{
+		 var ss = s[s.length-1]
+		 var sHead = s.slice(0, s.length-1)
+
+		 var r0 = r[0]
+		 if (r0==";")
+		     return s;
+		 if (r0 == "-"){
+                     st.push(ss)
+                     last.worker=(f)=>(f(ss)) ? sHead : null
+                     last.reader=(a)=>((x)=>x==a)
+                     return useRule(sHead, r.slice(1), st, last)
+		 }
+		 else if (r0 == "+"){
+                     last.worker=(f)=>s+f()
+                     last.reader=(a)=>(()=>a)
+                     return useRule(s, r.slice(1), st, last)
+		 }
+		 else if (r0 == "$"){
+                     if (st.length==0)
+			 return null;
+                     var pp=st.pop()
+                     s = s+pp
+                     return useRule(s, r.slice(1), st, new Object())
+		 }
+		 else if (r0 == "%"){
+                     last.reader=transSig
+                     return useRule(s, r.slice(1), st, last)
+		 }
+		 else{
+                     s = last.worker(last.reader(r0))
+                     return useRule(s, r.slice(1), st, last)
+		 }
+             }
+
+             function transSig(a){
+		 if (a=="2")
+                     return (x)=>{return "bcdfghjklmnpqrstvwxyz".includes(x)}
+		 if (a=="1")
+                     return (x)=>{return "aeiou".includes(x)}
+		 if (a=="s")
+                     return (x)=>{return st.length>1 && st[st.length-1]==st[st.length-2] }
+		 if (a=="g")
+                     return (x) => s[s.length-1]
+             }
+	 }
+	 
+	 function word2rules(word, rules){
+             var wordsNew=[word]
+             for (var r of rules){
+		 var w=useRule(word, r)
+		 if (w)
+                     wordsNew.push(w)
+             }
+             return wordsNew
+	 }
+
+	 function ruleAllWords(words, rules, filterWord, label="word-filler"){
+             var res = []
+             for ( var w of words ){
+		 var wp=w[0]
+		 var wl=w[1]
+		 var ww=w[2]
+		 var wNew=word2rules(ww.toLowerCase(), rules)
+		 var wValid=wNew.filter(filterWord)
+
+		 if (wValid.length>0)
+                     res.push([wp, wl, wValid[0], label])
+             }
+             return res
+
+	 }
+	 var keywords = function(){return Object.keys(dictInUse())}
+	 function getSimpleFilter(){
+	     var dictIndices = keywords()
+	     return (x)=>dictIndices.includes(x)
+	 }
+
+
+	 /*
+	    words1=allWords(s)
+	    var validWords = ruleAllWords(words1, rls, (x)=>keywords.includes(x))
+	    var allFill=fillAllLabeled(s, validWords, "word-filled")
+	    asd.innerHTML=allFill.enlonged
+	  */
+
+	 function elemInfo(elem, allFiller1=allFiller){
+	     var eid=elem.id;
+	     var info = allFiller1.wordDict[eid]
+	     return info
+	 }
+	 function sendText(do_jump=true, removeDup=remove_dup){
+	     var s = document.getElementById("maininput").value
+	     var words = allWords(s)
+	     var wordsValid=ruleAllWords(words, ruleArray, getSimpleFilter())
+	     allFiller = fillAllLabeled(s, wordsValid)
+	     demo.innerHTML=""
+	     demo.innerHTML=allFiller.enlonged
+	     fillObjs=[];
+	     (Object.keys(allFiller.wordDict)).forEach((e)=>fillObjs.push(document.getElementById(e)))
+	     if (removeDup)
+		 refineList()
+
+
+	     for (var o of fillObjs){
+		 o.onmousedown = function(){
+		     elemExplain(this, false)
+		     currentFill = fillObjs.findIndex(e=>e==this)
+		     console.log(currentFill, " in use")
+		 } 
+		 
+		 //o.onmouseup = function(){var t = this.offsetTop - this.parentNode.offsetTop; console.log(t); demo.parentNode.scrollTop=t-100}
+	     }
+	     for (var o of document.getElementsByClassName("word-filler-dup")){
+		 o.onmousedown = function (){elemExplain(this, false)}
+	     }
+	     listWords()
+	     if (do_jump)
+		 window.scroll(0, demo.parentNode.offsetTop-30)
+	 }
+	 
+	 function tailCover(s, head=1, tail=1){
+	     var longtail = s.length-head
+	     tail= longtail>=tail? tail : longtail
+	     var starNum=longtail-tail
+	     starNum = starNum>=0 ? starNum : 0
+	     
+	     return s.slice(0,head) + "*".repeat(starNum)+s.slice(s.length-tail, s.length)
+	 }
+
+
+	 function elemCover(elem, head=1, tail=1 ){
+	     var s = allFiller.wordDict[elem.id].inText
+	     elem.innerHTML="<span style=\"color:red\">" + tailCover(s, head, tail) + "<\span>"
+	 }
+	 function coverAll(allFiller1=allFiller){
+	     for (o of fillObjs){
+		 elemCover(o)
+	     }
+	 }
+	 document.getElementById("main-clicker").onclick=sendText
+	 
+
+	 sendText(false)
+
+
+	 var currentFill=0
+	 var currentElem
+	 var currentInput=""
+	 var currentExplain =""
+
+	 function elemExplain(elem, cover=true, head=excise_cheat1, tail=excise_cheat2){
+	     var dictArray = dictInUse()
+	     var info = elemInfo(elem)
+	     var voc = info.voc
+	     var inText = info.inText
+	     if (inText.toLowerCase()==voc)
+		 inText=""
+	     var explain = dictArray[voc]
+	     if ( cover)
+		 var explainHead = tailCover(voc, head, tail)
+	     else
+		 var explainHead = voc + " &#8594 " + inText
+	     document.getElementById("explain-head").innerHTML=explainHead
+	     document.getElementById("explain-area").innerHTML=explain
+	 }
+	 
+	 function elemReveal(elem){
+	     var info = elemInfo(elem)
+	     var inText = info.inText
+	     elem.innerHTML=inText
+
+	 }
+	 
+	     
+	 function elemBring(o, reserve=50){
+	     var t = o.offsetTop - o.parentNode.offsetTop;
+	     demo.parentNode.scrollTop = t-reserve
+	     if (o.className!= "word-filler-done"){
+		 elemClear(o)
+		 elemExplain(o)
+	     }
+	     else
+		 elemExplain(o, false)
+	 }
+	 function elemClear(o,head=excise_cheat1, tail=excise_cheat2){
+	     o.className="word-filler-current"
+	     currentInput=""
+	     elemCover(o, head, tail)
+	 }
+	 function elemFill(elem, s){
+	     var info = elemInfo(elem)
+	     var inText = info.inText
+	     var covered  =  tailCover(inText)
+	     s = s.slice(0, inText.length)
+	     covered = covered.slice(s.length)
+	     elem.innerHTML =  s + covered
+	     if (s == inText.toLowerCase()){
+		 console.log(s, " == ", inText.toLowerCase())
+		 elem.className="word-filler-done"
+		 elemReveal(elem)
+		 elemExplain(elem, false)
+		 return true
+	     }
+	     else
+		 return false
+	 }
+ 
+	 function fillCurrent(){
+	     var elem = fillObjs[currentFill]
+	     elemBring(elem)
+	     elemClear(elem)
+	 }
+	 function startFill(){
+	     if (state_in_excise)
+		 return
+	     state_in_excise=true
+	     coverAll()
+	     fillCurrent()
+	     fillObjs.forEach(e=>{e.className="word-filler"})
+	     alert("Finish the cloze with keyboard. Press: \n ; / 5 to move next/previous. \n BACKSPACE to clear the buffer,\n  1 / ENTER to show the partial / full solution of the blank!")
+	 }
+	 document.getElementById("excise-clicker").onclick=startFill
+ 
+	 function fillNext(){
+	     var elem0  = fillObjs[currentFill]
+	     if (elem0.className != "word-filler-done")
+		 elem0.className = "word-filler"
+	     currentFill = ( currentFill+1 ) % fillObjs.length
+	     currentInput=""
+	     var elem = fillObjs[currentFill]
+	     elemBring(elem)
+	 }
+ 
+	 function fillPrevious(){
+	     var elem0  = fillObjs[currentFill]
+	     if (elem0.className != "word-filler-done")
+		 elem0.className = "word-filler"
+	     currentFill = ( currentFill-1 + fillObjs.length) % fillObjs.length
+	     currentInput=""
+	     var elem = fillObjs[currentFill]
+	     elemBring(elem)
+	 }
+
+
+
+	 currentElem=fillObjs[currentFill]
+	 var partialRevealer= getRevealer()
+	 
+	 function charAdder(c){
+	     currentInput = currentInput + c;
+	     elemFill(fillObjs[currentFill], currentInput)
+	 }
+	 function transKeys(e){
+	     function k2char(k){
+		 return "abcdefghijklmnopqrstuvwxyz"[k-65]
+	     }
+	     if (65<=e.keyCode && e.keyCode <= 90)
+		 charAdder(k2char(e.keyCode))
+	     else if (e.keyCode==53)
+		 fillPrevious()
+	     else if (e.keyCode==186)
+		 fillNext()
+	     else if (e.keyCode==8){
+		 elemBring(fillObjs[currentFill])
+		 elemClear(fillObjs[currentFill])
+	     }
+	     else if (e.keyCode==13)
+		 elemExplain(fillObjs[currentFill], false)
+	     else if (e.keyCode==49)
+		 partialRevealer()
+	     else
+		 console.log(e.keyCode)
+	 }
+	 document.body.onkeydown=transKeys
+	     
+	 function listWords(){
+	     wordSet=[]
+	     var dictArray=dictInUse()
+	     state_in_excise = false
+	     var words1=[ ...demo.getElementsByClassName("word-filler")]
+	     var words2=[ ...demo.getElementsByClassName("word-filler-current")]
+	     var words3=[ ...demo.getElementsByClassName("word-filler-done")]
+	     var words = words1.concat(words2).concat(words3)
+	     console.log(words.length)
+	     document.getElementById("show-answer").value="Total "+words.length+" words"
+	     res = ""
+	     for (w of words){
+		 var r = document.createElement("p")
+		 var info= elemInfo(w)
+		 wordSet.push(info.voc)
+		 w.innerHTML=info.voc
+		 r.innerHTML = w.outerHTML + " -- " + dictArray[info.voc]
+		 w.innerHTML=info.inText
+		 res = res + r.outerHTML
+	     }
+	     document.getElementById("explain-head").innerHTML=wordSet.sort().join(" ")
+	     document.getElementById("explain-area").innerHTML=res
+	     return res
+	 }
+	 document.getElementById("show-answer").onclick=listWords
+
+	 function refineList(){
+	     wordSet=[]
+	     for (k of Object.keys(allFiller.wordDict)){
+		 w = allFiller.wordDict[k]
+		 if (! wordSet.includes(w.voc))
+		     wordSet.push(w.voc)
+		 else{
+		     document.getElementById(k).className="word-filler-dup"
+		 }
+	     }
+	     fillObjs = [ ... demo.getElementsByClassName("word-filler") ]
+	     return wordSet
+	 }
+
+	 function dictInUse(){
+	     var inuse = document.getElementById("nonsense-voting").value
+	     return window[inuse]
+	 }
+
+	 function getRevealer(){
+	     var currentFill_r = currentFill
+	     var current_head=1
+	     return function (){
+		 if (currentFill != currentFill_r){
+		     current_head=1
+		     currentFill_r = currentFill;
+		 }
+		 elemExplain(fillObjs[currentFill], true, current_head, excise_cheat2)
+		 current_head += 1
+	     }
+	 }
+	     
+
+	</script>
+	
+    </body>
+</html>

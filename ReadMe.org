@@ -1,0 +1,35 @@
+#+TITLE:完形填空器 - 写作词汇增长神器
+
+
+Milkyway - A Revolutionary Way For Learning Language Skills
+
+[[./app/milkyway.html][Start]]
+
+ReadMe:
+
+* rules.js:
+
+  Explaination of the transforming rules:
+  
+** -s
+   meets -> meet
+   
+** -g-n-i+e
+   voting -> vote
+
+** -s-e-i+y
+   treaties -> treaty
+   
+** -g-n-i-%2-%s-%1$$
+   sitting -> sit
+   
+- %1 = aeiou
+- %2 = bcdfghjklmnpqrstvwxyz
+- %s = same charactor
+- $ = pop 
+  
+
+
+
+
+
