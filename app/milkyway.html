@@ -84,7 +84,7 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	 var article=window.location.search.match(/article=([^&]+)/)
 	 if (article){
 	     article=article[1]
-	     document.getElementById("maininput").value=decodeURI(article)
+	     document.getElementById("maininput").value=decodeURIComponent(article)
 	     document.getElementById("changeable-head").href=window.location.href
 	 }
 	 
@@ -284,8 +284,8 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	     var s = document.getElementById("maininput").value
 	     if (do_jump){
 		 window.scroll(0, demo.parentNode.offsetTop-30)
-		 demo.style.backgroundImage="url(?text-face="+encodeURI(s)+"/face.png)"
-		 reviewLocation = window.location.origin + window.location.pathname + "?article="+encodeURI(s)
+		 demo.style.backgroundImage="url(?text-face="+encodeURIComponent(s)+"/face.png)"
+		 reviewLocation = window.location.origin + window.location.pathname + "?article="+encodeURIComponent(s)
 		 document.getElementById("changeable-head").href=reviewLocation
 		 console.log(reviewLocation)
 	     }
