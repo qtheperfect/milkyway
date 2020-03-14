@@ -285,7 +285,7 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	     if (do_jump){
 		 window.scroll(0, demo.parentNode.offsetTop-30)
 		 demo.style.backgroundImage="url(\"?text-face="+encodeURIComponent(s)+"/face.png\")"
-		 reviewLocation = window.location.origin + window.location.pathname + "?article="+encodeURIComponent(s)
+		 reviewLocation = window.location.origin + window.location.pathname + "?article=" + encodeURIComponent(new Date().toLocaleString()+"\n" + s)
 		 document.getElementById("changeable-head").href=reviewLocation
 		 console.log(reviewLocation)
 	     }
