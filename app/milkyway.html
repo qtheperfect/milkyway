@@ -4,14 +4,15 @@
 	<meta charset="utf-8">
 	<title id="title">Milkyway - Awesome AI-Aided Language Skill Enhancement</title>
 	<link rel="stylesheet" href="app/milkyway.css" type="text/css"/>
-	<script src="app/dictArray.js"></script>
-	<script src="app/badArray.js"></script>
-	<script src="app/dictArray_t.js"></script>
+	<script src="app/dictList.js"></script>
+	<script src="app/badList.js"></script>
+	<script src="app/dictList_t.js"></script>
 	<script src="app/rules.js"></script>
+	<script src="app/redundantList.js"></script>
 	<script>
-       	    document.oncontextmenu = function (event) {
-		event.preventDefault();
-            };
+       	 /* document.oncontextmenu = function (event) {
+	    event.preventDefault();
+	  * }; */
 	    var cookable=""
 	    var cookedRecords = document.cookie.split(";")
 	    if (cookedRecords[0].length>0){
@@ -24,13 +25,13 @@
 	<center><h1>Milkyway -  A Cloze Practice Website</h1></center>
 	<center>Your English level:
 	    <select id="nonsense-voting" style="background:lightblue">
-		<option value="dictArray_t" >tem-8</option>
-		<option value="dictArray" selected="selected" >cet-6</option>
-		<option value="dictArray_t" >tofel</option>
-		<option value="dictArray_t" >ielts</option>
-		<option value="dictArray_t" >barrister</option>
+		<option value="dictList_t" >tem-8</option>
+		<option value="dictList" selected="selected" >cet-6</option>
+		<option value="dictList_t" >tofel</option>
+		<option value="dictList_t" >ielts</option>
+		<option value="dictList_t" >barrister</option>
 	    </select></center>
-	<p style="text-align:right">Review <a id="changeable-head" href="." style="color:yellow;margin-right:40px"> this article!</a></p>
+	<p style="text-align:right"> <a id="changeable-head" href="." style="color:yellow;margin-right:40px"> Quick Review Link </a></p>
 	<textarea id="maininput">
 *** You do the reading, we do the checking!
 
@@ -46,9 +47,11 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 
 
 	</textarea>
-	<input type="button" class="colorful-button" value="Paste text above and click me" id="main-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
+	<input type="button" class="colorful-button" value="Paste Text Above and Click" id="main-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 	<input type="button" class="colorful-button" value="List Words" id="show-answer" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 	<input type="button" class="colorful-button" value="Cloze excise" id="excise-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
+	<input type="button" class="dark-button" value="Exclude Redundant" id="exclude-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
+	<input type="button" class="dark-button" value="Clear Input" id="clear-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 
 	<div id="demo-container" class="demo-container">
 	    <div id="text-container" style="position:absolute;width:65%;height:93vh;overflow-y:scroll;"   class="demo-area">
@@ -82,13 +85,34 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	
 	 var url1 = window.location.origin + window.location.path
 	 var article=window.location.search.match(/article=([^&]+)/)
+	 var lastExclude=window.location.search.match(/redundant=([^&]+)/)
 	 if (article){
 	     article=article[1]
 	     document.getElementById("maininput").value=decodeURIComponent(article)
 	     document.getElementById("changeable-head").href=window.location.href
 	 }
-	 
-	  
+	 if (lastExclude){
+	     redundantList=JSON.parse(decodeURIComponent(lastExclude[1]));
+	     console.log(redundantList)
+	     excludeRedundant()
+	 }
+
+
+	 function refreshRedundant(){
+	     var redObjs = [ ...demo.getElementsByClassName("word-filler-done") ]
+	     redundantList=[];
+	     redObjs.forEach(e=>{if(e.className=="word-filler-done"){redundantList.push(elemInfo(e).voc)}});
+	 }
+	 function refreshChangeable(){
+	     var head = document.getElementById("changeable-head")
+	     var mainString = document.getElementById("maininput").value
+	     var dateStr = new Date().toLocaleString('zh-CN', {hour12:false}) + "\n"
+	     var excludeStr = JSON.stringify(redundantList)
+	     reviewLocation = window.location.origin + window.location.pathname + "?article=" + encodeURIComponent( dateStr + mainString ) + "&redundant="+encodeURIComponent(excludeStr)
+	     head.href=reviewLocation
+	     console.log(reviewLocation)
+	 }
+
 
 	 var fillIn = function(nLast, n, l, s, label="word-filler"){
              var insThis = document.createElement("span")
@@ -264,7 +288,7 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	 }
 	 function getSimpleFilter(){
 	     var dictIndices = keywords()
-	     return {good:(x)=>dictIndices.includes(x), bad:(x)=>badArray.includes(x)}
+	     return {good:(x)=>dictIndices.includes(x), bad:(x)=>badList.includes(x)}
 	 }
 
 
@@ -285,9 +309,7 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	     if (do_jump){
 		 window.scroll(0, demo.parentNode.offsetTop-30)
 		 demo.style.backgroundImage="url(\"?text-face="+encodeURIComponent(s)+"/face.png\")"
-		 reviewLocation = window.location.origin + window.location.pathname + "?article=" + encodeURIComponent(new Date().toLocaleString()+"\n" + s)
-		 document.getElementById("changeable-head").href=reviewLocation
-		 console.log(reviewLocation)
+		 refreshChangeable()
 	     }
 	     var words = allWords(s)
 	     var wordsValid=ruleAllWords(words, ruleArray, getSimpleFilter())
@@ -312,11 +334,12 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	     for (var o of document.getElementsByClassName("word-filler-dup")){
 		 o.onmousedown = function (){elemExplain(this, false)}
 	     }
-	     listWords()
+	     listWords(false)
 	     
 		 
 
 	 }
+
 	 
 	 function tailCover(s, head=1, tail=1){
 	     var longtail = s.length-head
@@ -338,6 +361,9 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	     }
 	 }
 	 document.getElementById("main-clicker").onclick=sendText
+	 document.getElementById("clear-clicker").onclick=()=>{
+	     document.getElementById("maininput").value=""
+	 }
 	 
 
 	 sendText(false)
@@ -348,14 +374,22 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	 var currentInput=""
 	 var currentExplain =""
 
+
+	 function excludeRedundant(){
+	     fillObjs.forEach(e=>{if (redundantList.includes(elemInfo(e).voc)) {elemReveal(e);e.className="word-filler-done"}})
+	 }
+	 document.getElementById("exclude-clicker").onclick=excludeRedundant
+
+	     
+
 	 function elemExplain(elem, cover=true, head=excise_cheat1, tail=excise_cheat2){
-	     var dictArray = dictInUse()
+	     var dictList = dictInUse()
 	     var info = elemInfo(elem)
 	     var voc = info.voc
 	     var inText = info.inText
 	     if (inText.toLowerCase()==voc)
 		 inText=""
-	     var explain = dictArray[voc]
+	     var explain = dictList[voc]
 	     if ( cover)
 		 var explainHead = tailCover(voc, head, tail)
 	     else
@@ -368,7 +402,7 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	     var info = elemInfo(elem)
 	     var inText = info.inText
 	     elem.innerHTML=inText
-
+	     elem.className="word-filler-done"
 	 }
 	 
 	     
@@ -416,7 +450,6 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 		 return false;
 	     }
 	     else {
-		 e.className="word-filler-done"
 		 elemReveal(e)
 		 elemExplain(e, false)
 		 return true
@@ -431,13 +464,18 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	     elemClear(elem)
 	 }
 	 function startFill(){
-	     if (state_in_excise)
+	     if (state_in_excise){
 		 return
-	     state_in_excise=true
+	     }
+	     state_in_excise=true;
+	     ([ ...demo.getElementsByClassName("word-filler-current") ]).forEach((e)=>{e.className="word-filler"});
+	     fillObjs=[ ...demo.getElementsByClassName("word-filler") ] 
+	     currentFill = 0
 	     coverAll()
 	     fillCurrent()
 	     fillObjs.forEach(e=>{e.className="word-filler"})
-	     alert("Finish the cloze with keyboard. Press: \n ; / SHIFT to move forth/back. \n BACKSPACE to clear the buffer,\n  1 / ENTER to show the partial / full solution of the blank!")
+	     if (! lastExclude)
+		 alert("Finish the cloze with keyboard. Press: \n ; / SHIFT to move forth/back. \n BACKSPACE to clear the buffer,\n  1 / ENTER to show the partial / full solution of the blank!")
 	 }
 	 document.getElementById("excise-clicker").onclick=startFill
  
@@ -448,6 +486,8 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	     currentInput=""
 	     var elem = fillObjs[currentFill]
 	     elemBring(elem)
+	     if (! elemCheck(elem))
+		 elemClear(elem)
 	 }
  
 	 function fillPrevious(){
@@ -482,6 +522,12 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 		 elemClear(fillObjs[currentFill])
 		 elemBring(fillObjs[currentFill])
 	     }
+	     else if (e.keyCode==32){
+		 e.preventDefault()
+		 e.stopPropagation()
+		 elemClear(fillObjs[currentFill])
+		 elemBring(fillObjs[currentFill])
+	     }
 	     else if (e.keyCode==53){
 		 elemReveal(fillObjs[currentFill])
 		 elemExplain(fillObjs[currentFill], false)
@@ -494,14 +540,20 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 		 console.log(e.keyCode)
 	 }
 	 document.body.onkeydown=transKeys
+
 	     
-	 function listWords(){
+	 function listWords(excludeLess=true){
 	     wordSet=[]
-	     var dictArray=dictInUse()
+	     var dictList=dictInUse()
 	     state_in_excise = false
 	     var words1=[ ...demo.getElementsByClassName("word-filler")]
 	     var words2=[ ...demo.getElementsByClassName("word-filler-current")]
 	     var words3=[ ...demo.getElementsByClassName("word-filler-done")]
+
+	     if (excludeLess)
+		 refreshRedundant()
+	     refreshChangeable()
+	     
 	     var words = words1.concat(words2).concat(words3)
 	     console.log(words.length)
 	     document.getElementById("show-answer").value="Total "+words.length+" words"
@@ -511,7 +563,7 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 		 var info= elemInfo(w)
 		 wordSet.push(info.voc)
 		 w.innerHTML=info.voc
-		 r.innerHTML = w.outerHTML + " -- " + dictArray[info.voc]
+		 r.innerHTML = w.outerHTML + " -- " + dictList[info.voc]
 		 w.innerHTML=info.inText
 		 res = res + r.outerHTML
 	     }

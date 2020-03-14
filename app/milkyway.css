@@ -52,6 +52,14 @@
     padding:3px;
     border-radius:8px;
 }
+.dark-button{
+    color:#ffa31a;
+    background:black;
+    border:solid 1px;
+    border-color:#ffa31a;;
+    padding:3px;
+    border-radius:8px;
+}
 
 .word-filler {
     color:#ffa31a;
