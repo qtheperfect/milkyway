@@ -51,6 +51,7 @@
     border:0px;
     padding:3px;
     border-radius:8px;
+    float:left;
 }
 .dark-button{
     color:#ffa31a;
@@ -59,6 +60,7 @@
     border-color:#ffa31a;;
     padding:3px;
     border-radius:8px;
+    float:left;
 }
 
 .word-filler {

@@ -5,8 +5,9 @@
 	<title id="title">Milkyway - Awesome AI-Aided Language Skill Enhancement</title>
 	<link rel="stylesheet" href="app/milkyway.css" type="text/css"/>
 	<script src="app/dictList.js"></script>
-	<script src="app/badList.js"></script>
+	<script src="app/bad.js"></script>
 	<script src="app/dictList_t.js"></script>
+	<script src="app/dictList06.js"></script>
 	<script src="app/rules.js"></script>
 	<script src="app/redundantList.js"></script>
 	<script>
@@ -25,15 +26,13 @@
 	<center><h1>Milkyway -  A Cloze Practice Website</h1></center>
 	<center>Your English level:
 	    <select id="nonsense-voting" style="background:lightblue">
-		<option value="dictList_t" >tem-8</option>
-		<option value="dictList" selected="selected" >cet-6</option>
+		<option value="dictBook06" selected="selected">tem-8</option>
+		<option value="dictList"  >cet-6</option>
 		<option value="dictList_t" >tofel</option>
 		<option value="dictList_t" >ielts</option>
 		<option value="dictList_t" >barrister</option>
 	    </select></center>
-	<p style="text-align:right"> <a id="changeable-head" href="." style="color:yellow;margin-right:40px"> Quick Review Link </a></p>
 	<textarea id="maininput">
-*** You do the reading, we do the checking!
 
  ====  Paste English Text Here ====>
 
@@ -47,11 +46,14 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 
 
 	</textarea>
+	<div id="buttons" style="height:35px">
 	<input type="button" class="colorful-button" value="Paste Text Above and Click" id="main-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 	<input type="button" class="colorful-button" value="List Words" id="show-answer" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 	<input type="button" class="colorful-button" value="Cloze excise" id="excise-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 	<input type="button" class="dark-button" value="Exclude Redundant" id="exclude-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 	<input type="button" class="dark-button" value="Clear Input" id="clear-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
+	<p style="float:right"> <a id="changeable-head" href="." style="color:yellow;margin-right:30px"> Quick Review Link </a></p>
+	</div>
 
 	<div id="demo-container" class="demo-container">
 	    <div id="text-container" style="position:absolute;width:65%;height:93vh;overflow-y:scroll;"   class="demo-area">
@@ -306,6 +308,7 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	 }
 	 function sendText(do_jump=true, removeDup=remove_dup){
 	     var s = document.getElementById("maininput").value
+	     s=s.replace(/([a-zA-Z]+)+-\n([a-zA-Z]+)/g, "$1$2\n")
 	     if (do_jump){
 		 window.scroll(0, demo.parentNode.offsetTop-30)
 		 demo.style.backgroundImage="url(\"?text-face="+encodeURIComponent(s)+"/face.png\")"
@@ -389,7 +392,7 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	     var inText = info.inText
 	     if (inText.toLowerCase()==voc)
 		 inText=""
-	     var explain = dictList[voc]
+	     var explain = getDef(dictList[voc], ! cover)
 	     if ( cover)
 		 var explainHead = tailCover(voc, head, tail)
 	     else
@@ -563,7 +566,7 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 		 var info= elemInfo(w)
 		 wordSet.push(info.voc)
 		 w.innerHTML=info.voc
-		 r.innerHTML = w.outerHTML + " -- " + dictList[info.voc]
+		 r.innerHTML = w.outerHTML + " -- " + getDef(dictList[info.voc])
 		 w.innerHTML=info.inText
 		 res = res + r.outerHTML
 	     }
@@ -572,6 +575,21 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	     return res
 	 }
 	 document.getElementById("show-answer").onclick=listWords
+
+	 function getDef(d, ipa=false){
+	     var res=""
+
+	     if (ipa && d.ipa){
+		 res = res+d.ipa
+	     }
+	     if (d.def){
+		 res = res+d.def
+	     }
+	     else{
+		 res = res + d
+	     }
+	     return res
+	 }
 
 	 function refineList(){
 	     wordSet=[]
