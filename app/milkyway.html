@@ -5,9 +5,9 @@
 	<title id="title">Milkyway - Awesome AI-Aided Language Skill Enhancement</title>
 	<link rel="stylesheet" href="app/milkyway.css" type="text/css"/>
 	<script src="app/dictList.js"></script>
-	<script src="app/bad.js"></script>
-	<script src="app/dictList_t.js"></script>
-	<script src="app/dictList06.js"></script>
+	<script src="app/badList.js"></script>
+	<script src="app/dictList_mw.js"></script>
+	<script src="app/dictBook08.js"></script>
 	<script src="app/rules.js"></script>
 	<script src="app/redundantList.js"></script>
 	<script>
@@ -26,11 +26,11 @@
 	<center><h1>Milkyway -  A Cloze Practice Website</h1></center>
 	<center>Your English level:
 	    <select id="nonsense-voting" style="background:lightblue">
-		<option value="dictBook06" selected="selected">tem-8</option>
+		<option value="dictBook08" selected="selected">tem-8</option>
 		<option value="dictList"  >cet-6</option>
-		<option value="dictList_t" >tofel</option>
-		<option value="dictList_t" >ielts</option>
-		<option value="dictList_t" >barrister</option>
+		<option value="dictList_mw" >tofel</option>
+		<option value="dictList_mw" >ielts</option>
+		<option value="dictList_mw" >barrister</option>
 	    </select></center>
 	<textarea id="maininput">
 
@@ -46,13 +46,13 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 
 
 	</textarea>
-	<div id="buttons" style="height:35px">
+	<div id="buttons">
 	<input type="button" class="colorful-button" value="Paste Text Above and Click" id="main-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 	<input type="button" class="colorful-button" value="List Words" id="show-answer" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 	<input type="button" class="colorful-button" value="Cloze excise" id="excise-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 	<input type="button" class="dark-button" value="Exclude Redundant" id="exclude-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 	<input type="button" class="dark-button" value="Clear Input" id="clear-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
-	<p style="float:right"> <a id="changeable-head" href="." style="color:yellow;margin-right:30px"> Quick Review Link </a></p>
+	<span style="float:right"> <a id="changeable-head" href="." style="color:yellow;margin-right:30px"> Quick Review Link </a></span>
 	</div>
 
 	<div id="demo-container" class="demo-container">
@@ -392,7 +392,7 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	     var inText = info.inText
 	     if (inText.toLowerCase()==voc)
 		 inText=""
-	     var explain = getDef(dictList[voc], ! cover)
+	     var explain = getDef(dictList[voc], cover)
 	     if ( cover)
 		 var explainHead = tailCover(voc, head, tail)
 	     else
@@ -517,8 +517,10 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	     }
 	     if (65<=e.keyCode && e.keyCode <= 90)
 		 charAdder(k2char(e.keyCode))
-	     else if (e.keyCode==16)
+	     else if (e.keyCode==16){
+		 e.stopPropagation()
 		 fillPrevious()
+	     }
 	     else if (e.keyCode==186)
 		 fillNext()
 	     else if (e.keyCode==8){
@@ -543,6 +545,7 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 		 console.log(e.keyCode)
 	 }
 	 document.body.onkeydown=transKeys
+	 document.getElementById("maininput").onkeydown=(e)=>e.stopPropagation()
 
 	     
 	 function listWords(excludeLess=true){
@@ -576,11 +579,11 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	 }
 	 document.getElementById("show-answer").onclick=listWords
 
-	 function getDef(d, ipa=false){
+	 function getDef(d, cover=false){
 	     var res=""
 
-	     if (ipa && d.ipa){
-		 res = res+d.ipa
+	     if (! cover && d.ipa){
+		 res = res+d.ipa + "\n"
 	     }
 	     if (d.def){
 		 res = res+d.def
