@@ -88,4 +88,6 @@
 
 #explain-container{
     border-left:dotted 1px grey;
+    overflow-y:scroll;
+    height:93vh;
 }
