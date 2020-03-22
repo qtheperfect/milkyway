@@ -20,6 +20,12 @@ var ruleArray=[
 
     "-s-e-v+f+e",
 
+
+    "-y-l", //likely -> like
+    "-y-l-i----$$$$+y", // luckily -> lucky
+    "-y-l-a-c-i$$", // dramatically -> dramatic 
+    "-y-l$+e", // gently-> gentle 
+
     "-r-e$",//__bijiaoji
     "-r-e",
     "-r-e-i+y",
@@ -36,6 +42,8 @@ var ruleArray=[
 
     "-c-i-%2$",//prophetic -> prophet
     "-n-o-i-%2$", // invention -> invent
+    "-n-o-i-%2-a-%2$+e", // limitation -> limite
+
     "-l-a-c$", // historical->historic
     "-l-a-c$+e"// practical->practice
     , "-y-t-i-%2$" // originality->original
