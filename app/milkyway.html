@@ -47,7 +47,7 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 
 	</textarea>
 	<div id="buttons">
-	<input type="button" class="colorful-button" value="Paste Text Above and Click" id="main-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
+	<input type="button" class="colorful-button" value="Click To Start" id="main-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 	<input type="button" class="colorful-button" value="List Words" id="show-answer" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 	<input type="button" class="colorful-button" value="Cloze Excise" id="excise-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 	<input type="button" class="dark-button" value="Exclude Redundant" id="exclude-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
@@ -73,6 +73,7 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	<script>
 	 // Your code here...
 	 var demo = document.getElementById("demo")
+	 demo.oncontextmenu=(e)=>e.preventDefault() 
 
 	 var allFiller=new Object();
 	 var fillObjs=new Array();
@@ -408,7 +409,8 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	 }
 	 
 	     
-	  function elemBring(o, reserve=50, ifExplain=true){
+	 var bringPreserve = demo.parentNode.getClientRects()[0].height/3
+	  function elemBring(o, reserve=bringPreserve, ifExplain=true){
 	     var t = o.offsetTop - o.parentNode.offsetTop;
 	     demo.parentNode.scrollTop = t-reserve
 	     o.className="word-filler-current"
@@ -541,6 +543,13 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 		 elemExplain(fillObjs[currentFill], false)
 	     else if (e.keyCode==49)
 		 partialRevealer()
+	     else if (e.keyCode == 52 ){
+		 var o = fillObjs[currentFill]
+		 if (o.className != "word-filler-done")
+		     elemReveal(o) ;
+		 else
+		     o.className="word-filler" ;
+	     }
 	     else
 		 console.log(e.keyCode)
 	 }
@@ -585,6 +594,10 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 		     [...demo.getElementsByClassName("word-filler-current")].forEach(e=>e.className="word-filler")
 		     var oo = document.getElementById(o.id.replace(/-exp$/, ""))
 		     elemBring(oo, 50, false)
+		     var cNew = fillObjs.findIndex(e=>e==oo)
+		     if (cNew && cNew >= 0){
+			 currentFill = cNew
+		     }
 		 }
 	     })
 		 
@@ -632,11 +645,14 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	     var currentFill_r = currentFill
 	     var current_head=1
 	     return function (){
+		 var e = fillObjs[currentFill]
 		 if (currentFill != currentFill_r){
 		     current_head=1
 		     currentFill_r = currentFill;
 		 }
-		 elemExplain(fillObjs[currentFill], true, current_head, excise_cheat2)
+		 elemExplain(e, true, current_head, excise_cheat2)
+		 currentInput=elemInfo(e).inText.toLowerCase().slice(0,current_head)
+		 elemFill(e, currentInput)
 		 current_head += 1
 	     }
 	 }

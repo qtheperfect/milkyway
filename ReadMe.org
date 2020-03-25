@@ -3,24 +3,28 @@
 
 Milkyway - A Revolutionary Way For Learning Language Skills
 
+Generate clozes from any text, developing vocabulary using the context.
+
+
 [[./app/milkyway.html][Start]]
 
-ReadMe:
 
-* rules.js:
+* Code Explanation 
 
-  Explaination of the transforming rules:
-  
-** -s
-   meets -> meet
+** rules.js:
+
+   The transforming rules for English postfixes:
    
-** -g-n-i+e
-   voting -> vote
+*** -s
+    meets -> meet
+    
+*** -g-n-i+e
+    voting -> vote
 
-** -s-e-i+y
-   treaties -> treaty
-   
-** -g-n-i-%2-%s-%1$$
+*** -s-e-i+y
+    treaties -> treaty
+    
+*** -g-n-i-%2-%s-%1$$
    sitting -> sit
    
 - %1 = aeiou
