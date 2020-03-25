@@ -1,4 +1,5 @@
-var dictBook08={}
+// r.t. 俞敏洪 GRE词汇精选便携版▪ 新东方红宝书系列 (Chinese Edition) ASIN: B00CGXZVG2
+ var dictBook08={}
  dictBook08["abandon"] = {ipa:"[ə'bændən]", def:"v./n.\n放弃；放纵"};
  dictBook08["abash"] = {ipa:"[ə'bæʃ]", def:"v.\n使羞愧，使尴尬"};
  dictBook08["abate"] = {ipa:"[ə'beit]", def:"v.\n减轻，减少"};

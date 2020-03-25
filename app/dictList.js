@@ -1,3 +1,5 @@
+// r.t. 俞敏洪 GRE词汇精选便携版▪ 新东方红宝书系列 (Chinese Edition) ASIN: B00CGXZVG2
+
 dictList = new Object()
 dictList["﻿abase"]="﻿v.降低…的地位，贬抑，使卑下"
 dictList["abash"]="v.使害羞，使尴尬"

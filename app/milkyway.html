@@ -50,9 +50,11 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	<input type="button" class="colorful-button" value="Click To Start" id="main-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 	<input type="button" class="colorful-button" value="List Words" id="show-answer" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 	<input type="button" class="colorful-button" value="Cloze Excise" id="excise-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
+	<input type="button" class="dark-button" value="Load" id="local-loader" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 	<input type="button" class="dark-button" value="Exclude Redundant" id="exclude-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 	<input type="button" class="dark-button" value="Clear Input" id="clear-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
-	<span style="float:right"> <a id="changeable-head" href="." style="color:yellow;margin-right:30px"> Quick Review Link </a></span>
+	<span style="float:right"> <a id="changeable-head" href="." style="color:yellow;margin-right:30px"> Quick Review Link </a>
+	</span>
 	</div>
 
 	<div id="demo-container" class="demo-container">
@@ -85,34 +87,93 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	 var excise_cheat2=1
 	 var remove_dup=true
 
-	
 	 var url1 = window.location.origin + window.location.path
-	 var article=window.location.search.match(/article=([^&]+)/)
-	 var lastExclude=window.location.search.match(/redundant=([^&]+)/)
-	 if (article){
-	     article=article[1]
-	     document.getElementById("maininput").value=decodeURIComponent(article)
-	     document.getElementById("changeable-head").href=window.location.href
+	 var urlData="data://application/json;charset=utf-8,"
+
+	 function getDataString(a, l, u=urlData){
+	     var eea = encodeURIComponent(encodeURIComponent(getDate()+"\n"+a))
+	     var eel = encodeURIComponent(encodeURIComponent(JSON.stringify(l)))
+	     u += "?article="+eea+"&redundant="+eel
+	     return u;
 	 }
-	 if (lastExclude){
-	     redundantList=JSON.parse(decodeURIComponent(lastExclude[1]));
-	     console.log(redundantList)
-	     excludeRedundant()
+	
+	 function loadString(search){
+	     var article=search.match(/article=([^&]+)/)
+	     var lastExclude=search.match(/redundant=([^&]+)/)
+	     var res={}
+	     if (article){
+		 article=article[1]
+		 res.article=decodeURIComponent(article)
+	     }
+	     else
+		 res.article=""
+	     if (lastExclude){
+		 res.lastExclude=lastExclude[1]
+		 res.redundantList=JSON.parse(decodeURIComponent(res.lastExclude));
+	     }
+	     else
+		 res.redundantList=[]
+	     res.submiter = function(r=res){
+		 if (r.article){
+		     window.article = r.article
+		     document.getElementById("maininput").value=r.article
+		 }
+		 if (r.redundantList){
+		     window.lastExclude = r.lastExclude
+		     window.redundantList = window.redundantList.concat(r.redundantList)
+		     //excludeRedundant()
+		 }
+		 var h=document.getElementById("changeable-head")
+		 h.href=getDataString(r.article, r.redundantList)
+		 h.download="mw_"+getDate()+".txt"
+	     }
+	     return res
+	 }
+	 var urlLoader=loadString(window.location.search)
+	 urlLoader.submiter()
+	 function fReader(fun){
+	     var f = document.createElement("input")
+	     f.type="file"
+	     var r = new FileReader()
+	     var t=""
+	     r.onload=()=>{
+		 t=r.result
+		 fun(t)
+	     }
+	     f.onchange=()=> {
+		 r.readAsText(f.files[0])
+	     }
+	     f.click()
+	 }
+	 function changeFile(t){
+	     var r = loadString(t) 
+	     r.submiter()
 	 }
 
+	 document.getElementById("local-loader").onclick=()=>fReader(changeFile)
 
 	 function refreshRedundant(){
 	     var redObjs = [ ...demo.getElementsByClassName("word-filler-done") ]
 	     redundantList=[];
-	     redObjs.forEach(e=>{if(e.className=="word-filler-done"){redundantList.push(elemInfo(e).voc)}});
+	     redObjs.forEach(e=>{redundantList.push(elemInfo(e).voc)});
 	 }
+	 function getDate(){
+	     var dateStr = new Date().toLocaleString('zh-CN', {hour12:false})
+	     dateStr = dateStr.split('/').join("-")
+	     dateStr = dateStr.split(':').join("-")
+	     dateStr = dateStr.split(" ").join("_")
+	     return dateStr;
+	 }
+
 	 function refreshChangeable(){
 	     var head = document.getElementById("changeable-head")
 	     var mainString = document.getElementById("maininput").value
-	     var dateStr = new Date().toLocaleString('zh-CN', {hour12:false}) + "\n"
-	     var excludeStr = JSON.stringify(redundantList)
-	     reviewLocation = window.location.origin + window.location.pathname + "?article=" + encodeURIComponent( dateStr + mainString ) + "&redundant="+encodeURIComponent(excludeStr)
+	     //var dateStr = getDate() + "\n";
+	     //var excludeStr = JSON.stringify(redundantList)
+	     //reviewLocation = window.location.origin + window.location.pathname + "?article=" + encodeURIComponent( dateStr + mainString ) + "&redundant="+encodeURIComponent(excludeStr)
+	     var reviewLocation = getDataString(mainString, window.redundantList)
 	     head.href=reviewLocation
+	     head.download = "mk_" + getDate() + ".txt"
 	     console.log(reviewLocation)
 	 }
 
@@ -570,8 +631,8 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	     refreshChangeable()
 	     
 	     var words = words1.concat(words2).concat(words3)
-	     fillObjs = words.sort( (a,b)=>(a.id>b.id) );
-	     console.log(words.length)
+	     words2.forEach(e=>e.className="word-filler")
+	     
 	     document.getElementById("show-answer").value="Total "+words.length+" Words"
 	     res = ""
 	     for (w of words){
@@ -587,6 +648,9 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	     }
 	     document.getElementById("explain-head").innerHTML=wordSet.sort().join(" ")
 	     document.getElementById("explain-area").innerHTML=res
+
+	     fillObjs=[...demo.querySelectorAll(".word-filler, .word-filler-done")]
+
 	     var allExp = [... document.getElementById("explain-area").querySelectorAll(".word-filler,.word-filler-current, .word-filler-done")]
 	     allExp.forEach(o=> {
 		 // console.log(o)
@@ -656,9 +720,6 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 		 current_head += 1
 	     }
 	 }
-	     
-
 	</script>
-	
     </body>
 </html>

@@ -1,3 +1,6 @@
+// r.t. Merriam-Webster's Collegiate Dictionary, 11th Edition, Jacketed Hardcover, Indexed, 2020 Copyright ISBN-10: 9780877798095
+// r.t. 俞敏洪 GRE词汇精选便携版▪ 新东方红宝书系列 (Chinese Edition) ASIN: B00CGXZVG2
+
 window.dictList_mw=new Object()
 dictList_mw["abacus"]="n.frame with beads that slide along parallel rods, used for teaching numbers to children, and (in some countries) for counting";
 dictList_mw["abandon"]="v.  go away from (a person or thing or place) not intending to return; forsake; desert";
