@@ -4,6 +4,8 @@ var ruleArray=[
     "-g-n-i+e",
     "-g-n-i-%2-%s-%1$$;",
     "-g-n-i-y+i+e;",
+    "-s-g-n-i", //meanderings -> meander
+    "-s-g-n-i-%2$+e", //lodging -> lodge
 
     "-d-e$",
     "-d-e",

@@ -28,7 +28,7 @@
 
 #explain-head{
     color:lightblue;
-    fontsize:30px;
+    fontsize:120%;
 }
 #explain-area{
     background:black;
@@ -39,8 +39,8 @@
 
 .demo-area{
     padding:5px;
-    fontsize:20px;
-    line-height:25px;
+    fontsize:100%;
+    line-height:130%;
 
 }
 
@@ -67,14 +67,15 @@
     color:#ffa31a;
     fontstyle:bold;
     font-weight:bold;
-    margin-left:15px;
-    margin-right:15px;
+    margin-left:3%;
+    margin-right:3%;
 }
 
 .word-filler-current {
-    color:lightgreen;
-    font-size:23px;
-    border:1px solid rgba(200,170,0);
+    color:pink;//rgba(255,180,90);
+    font-size:135%;
+    border:1px solid rgba(255,170,0);
+    // margin-right:6%;
 }
 
 .word-filler-done {

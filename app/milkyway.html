@@ -50,10 +50,11 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	<input type="button" class="colorful-button" value="Click To Start" id="main-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 	<input type="button" class="colorful-button" value="List Words" id="show-answer" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 	<input type="button" class="colorful-button" value="Cloze Excise" id="excise-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
-	<input type="button" class="dark-button" value="Load" id="local-loader" style="margin:5px" onkeydown="document.body.onkeydown" /> 
 	<input type="button" class="dark-button" value="Exclude Redundant" id="exclude-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
-	<input type="button" class="dark-button" value="Clear Input" id="clear-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
-	<span style="float:right"> <a id="changeable-head" href="." style="color:yellow;margin-right:30px"> Quick Review Link </a>
+	<input type="button" class="dark-button" value="Clear" id="clear-clicker" style="margin:5px" onkeydown="document.body.onkeydown" /> 
+	<span style="float:right">
+	  <input type="button" class="dark-button" value="Import" id="local-loader" style="margin:5px" onkeydown="document.body.onkeydown" /> 
+	  <a id="changeable-head" href="." style="color:#ffa31a;margin-right:30px"> Export </a>
 	</span>
 	</div>
 
@@ -120,7 +121,7 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 		 }
 		 if (r.redundantList){
 		     window.lastExclude = r.lastExclude
-		     window.redundantList = window.redundantList.concat(r.redundantList)
+		     window.redundantList = [ ... new Set([...window.redundantList, ...r.redundantList])]
 		     //excludeRedundant()
 		 }
 		 var h=document.getElementById("changeable-head")
@@ -131,17 +132,21 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	 }
 	 var urlLoader=loadString(window.location.search)
 	 urlLoader.submiter()
+	 
 	 function fReader(fun){
 	     var f = document.createElement("input")
 	     f.type="file"
-	     var r = new FileReader()
-	     var t=""
-	     r.onload=()=>{
-		 t=r.result
-		 fun(t)
-	     }
+	     f.multiple="multiple";
+	     
 	     f.onchange=()=> {
-		 r.readAsText(f.files[0])
+		 [...f.files].forEach(x=>{
+		     var r = new FileReader()
+		     var t=""
+		     r.onload=()=>{
+			 t=r.result
+			 fun(t)
+		     }
+		     r.readAsText(x)})
 	     }
 	     f.click()
 	 }
@@ -173,7 +178,7 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	     //reviewLocation = window.location.origin + window.location.pathname + "?article=" + encodeURIComponent( dateStr + mainString ) + "&redundant="+encodeURIComponent(excludeStr)
 	     var reviewLocation = getDataString(mainString, window.redundantList)
 	     head.href=reviewLocation
-	     head.download = "mk_" + getDate() + ".txt"
+	     head.download = "milkyway_" + getDate() + ".txt"
 	     console.log(reviewLocation)
 	 }
 
@@ -633,7 +638,7 @@ It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritu
 	     var words = words1.concat(words2).concat(words3)
 	     words2.forEach(e=>e.className="word-filler")
 	     
-	     document.getElementById("show-answer").value="Total "+words.length+" Words"
+	     document.getElementById("show-answer").value= "" + (words1.length+words2.length) + "/" + words.length + " total"
 	     res = ""
 	     for (w of words){
 		 var r = document.createElement("p")
