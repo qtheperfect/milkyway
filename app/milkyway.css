@@ -28,7 +28,8 @@
 
 #explain-head{
     color:lightblue;
-    fontsize:120%;
+    font-size:130%;
+    font-weight:bold;
 }
 #explain-area{
     background:black;
@@ -39,9 +40,9 @@
 
 .demo-area{
     padding:5px;
-    fontsize:100%;
     line-height:130%;
-
+    font-family:"Times Newer Roman";
+    font-size:0.2in;
 }
 
 .colorful-button{
@@ -65,15 +66,15 @@
 
 .word-filler {
     color:#ffa31a;
-    fontstyle:bold;
     font-weight:bold;
-    margin-left:3%;
-    margin-right:3%;
+    font-size:125%;
+    margin-left:0.05in;
+    margin-right:0.05in;
 }
 
 .word-filler-current {
     color:pink;//rgba(255,180,90);
-    font-size:135%;
+    font-size:145%;
     border:1px solid rgba(255,170,0);
     // margin-right:6%;
 }
@@ -91,4 +92,23 @@
     border-left:dotted 1px grey;
     overflow-y:scroll;
     height:93vh;
+    position:absolute;
+    left:65%;
+    right:1%;
+}
+
+#text-container{
+    position:absolute;
+    width:65%;
+    height:93vh;
+    overflow-y:scroll; 
+}
+
+#demo{
+    width:100%; 
+    border:solid 1px gray; 
+}
+
+.red-zone{
+    color:#fc2200;
 }
