@@ -36,12 +36,14 @@
 }
 
 
-
+#buttons{
+    margin-left:10px;
+}
 
 .demo-area{
     padding:5px;
-    line-height:130%;
-    font-family:"Times Newer Roman";
+    line-height:150%;
+    font-family:"Times";
     font-size:0.2in;
 }
 
@@ -73,7 +75,7 @@
 }
 
 .word-filler-current {
-    color:pink;//rgba(255,180,90);
+    color:pink;
     font-size:145%;
     border:1px solid rgba(255,170,0);
     // margin-right:6%;
