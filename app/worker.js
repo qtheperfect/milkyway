@@ -1,4 +1,3 @@
-// Your code here...
 var demo = document.getElementById("demo")
 demo.oncontextmenu=(e)=>e.preventDefault() 
 
@@ -83,12 +82,12 @@ function fReader(fun){
     }
     f.click()
 }
-function changeFile(t){
-    var r = loadString(t) 
-    r.submiter()
+
+function loadAndSubmit(s){
+    loadString(s).submiter()
 }
 
-document.getElementById("local-loader").onclick=()=>fReader(changeFile)
+document.getElementById("local-loader").onclick=()=>fReader(loadAndSubmit)
 
 function refreshRedundant(){
     var redObjs = [ ...demo.getElementsByClassName("word-filler-done") ]
@@ -112,12 +111,12 @@ function refreshChangeable(){
     var reviewLocation = getDataString(mainString, window.redundantList)
     head.href=reviewLocation
     head.download = "recorduri_" + getDate() + ".milkyway"
-    console.log(reviewLocation)
+    console.log(getDataString(mainString, window.redundantList, url1))
     window.cookin(decodeURIComponent(reviewLocation))
 }
 
 
-var fillIn = function(nLast, n, l, s, label="word-filler"){
+function fillIn(nLast, n, l, s, label="word-filler"){
     var insThis = document.createElement("span")
     var orgWord=s.slice(n,n+l)
     insThis.className=label
@@ -130,7 +129,7 @@ var fillIn = function(nLast, n, l, s, label="word-filler"){
     res.enlonged = s1
     return res
 }
-var fillAll = function(s, words){
+function fillAll(s, words){
     var res = new Object()
     res.wordList = []
     var sorted = words.sort((a,b)=>(a[0]>=b[0]))
@@ -151,7 +150,7 @@ var fillAll = function(s, words){
     return res;
 }
 // fillAll with labels...
-var fillAllLabeled = function(s, words){
+function fillAllLabeled(s, words){
     var res = new Object()
     var wordList = []
     var sorted = words.sort((a,b)=>(a[0]>=b[0]))
@@ -312,7 +311,7 @@ function sendText(do_jump=true, removeDup=remove_dup){
     s=s.replace(/([a-zA-Z]+)+-\n([a-zA-Z]+)/g, "$1$2\n")
     if (do_jump){
 	window.scroll(0, demo.parentNode.offsetTop-30)
-	demo.style.backgroundImage="url(\"./text-faces/?egg="+encodeURIComponent(s)+".png\")"
+	demo.style.backgroundImage="url(\"" + baseServer + "/text-faces/?article="+encodeURIComponent(s)+"_large.png\")"
 	refreshChangeable()
     }
     var words = allWords(s)
@@ -484,10 +483,10 @@ function startFill(){
 }
 document.getElementById("excise-clicker").onclick=startFill
 
-function fillNext(){
+function fillNext(pace=1){
     var elem0  = fillObjs[currentFill]
     elemModify(elem0, false)
-    currentFill = ( currentFill+1 ) % fillObjs.length
+    currentFill = ( currentFill+pace ) % fillObjs.length
     currentInput=""
     var elem = fillObjs[currentFill]
     elemBring(elem)
@@ -495,10 +494,10 @@ function fillNext(){
 	elemClear(elem)
 }
 
-function fillPrevious(){
+function fillPrevious(pace=1){
     var elem0  = fillObjs[currentFill]
     elemModify(elem0, false)
-    currentFill = ( currentFill-1 + fillObjs.length) % fillObjs.length
+    currentFill = ( (currentFill-pace)%fillObjs.length + fillObjs.length) % fillObjs.length
     currentInput=""
     var elem = fillObjs[currentFill]
     elemBring(elem)
@@ -539,7 +538,7 @@ function transKeys(e){
 	elemReveal(fillObjs[currentFill])
 	elemExplain(fillObjs[currentFill], false)
     }
-    else if (e.keyCode==13 || e.keyCode==186)
+    else if (e.keyCode==13 || e.keyCode==186 || e.keyCode==59)
 	elemExplain(fillObjs[currentFill], false)
     else if (e.keyCode==49)
 	partialRevealer()
@@ -550,6 +549,10 @@ function transKeys(e){
 	else
 	    o.className="word-filler" ;
     }
+    else if (e.keyCode == 57) // 9
+	fillPrevious(5)
+    else if (e.keyCode==48)
+	fillNext(5)
     else
 	console.log(e.keyCode)
 }
@@ -603,12 +606,19 @@ function listWords(excludeLess=true){
 	    }
 	}
     })
-    
-    
-
     return res
 }
+
 document.getElementById("show-answer").onclick=listWords
+
+function refillObjs(){
+    if (!state_in_excise )
+	return
+    else
+	fillObjs.forEach(e=>e.className="word-filler")
+	return
+}
+document.getElementById("refill-clicker").onclick=refillObjs
 
 function getDef(d, cover=false){
     var res=""
