@@ -416,7 +416,7 @@
  dict9k["averse"] = {ipa:"[ə'və:s]", def:"adj.\n不愿的，反对的"};
  dict9k["aversion"] = {ipa:"[ə'və:ʃən]", def:"n.\n嫌恶，憎恨"};
  dict9k["avert"] = {ipa:"[ə'və:t]", def:"v.\n避免，防止；避开"};
- dict9k[" aviary"] = {ipa:"['eiviəri]", def:"n.\n大鸟笼，鸟舍"};
+ dict9k["aviary"] = {ipa:"['eiviəri]", def:"n.\n大鸟笼，鸟舍"};
  dict9k["avid"] = {ipa:"['ævid]", def:"adj.\n渴望的，热心的"};
  dict9k["avoid"] = {ipa:"[ə'vɔid]", def:"v.\n避开，躲避"};
  dict9k["avow"] = {ipa:"[ə'vau]", def:"v.\n承认；公开宣称"};
@@ -1828,7 +1828,7 @@
  dict9k["entreaty"] = {ipa:"[in'tri:ti]", def:"n.\n恳求，哀求"};
  dict9k["entree"] = {ipa:"['ɔntrei]", def:"n.\n主菜；获准进去的权利或特权"};
  dict9k["entrepreneur"] = {ipa:"[`ɔntrəprə'nə:]", def:"n.\n企业家，创业人"};
- dict9k[" entrust"] = {ipa:"[enˈtrʌst】", def:"v.\n委托；托付"};
+ dict9k["entrust"] = {ipa:"[enˈtrʌst】", def:"v.\n委托；托付"};
  dict9k["entry"] = {ipa:"[ˈentri]", def:"n.\n条目；记录；报关手续；入口"};
  dict9k["enumerate"] = {ipa:"[i'nju:məreit]", def:"v.\n列举，枚举"};
  dict9k["enunciate"] = {ipa:"[i'nʌnsieit]", def:"v.\n发音；（清楚地）表达，阐明"};
@@ -2346,7 +2346,7 @@
  dict9k["girth"] = {ipa:"[gə:θ]", def:"n.\n腰身；周长"};
  dict9k["gist"] = {ipa:"[dʒist]", def:"n.\n要点，要旨"};
  dict9k["glacial"] = {ipa:"['gleiʃəl]", def:"adj.\n冰期的，冰河期的；寒冷的"};
- dict9k[" glade"] = {ipa:"[gleɪd]", def:"n.\n林中的空地"};
+ dict9k["glade"] = {ipa:"[gleɪd]", def:"n.\n林中的空地"};
  dict9k["gladiator"] = {ipa:"['glædieitə]", def:"n.\n角斗士，与野兽搏斗者"};
  dict9k["glance"] = {ipa:"[gla:ns]", def:"v./n.\n一瞥"};
  dict9k["glare"] = {ipa:"[glæə]", def:"v.\n发出炫目光芒；怒目而视"};
@@ -3397,7 +3397,7 @@
  dict9k["meticulous"] = {ipa:"[mə'tikjuləs]", def:"adj.\n细心的，一丝不苟的"};
  dict9k["metrical"] = {ipa:"['metrikəl]", def:"adj.\n测量的；韵律的"};
  dict9k["metropolis"] = {ipa:"[mɪˈtrɔpəlɪs]", def:"n.\n大城市"};
- dict9k[" metropolitan"] = {ipa:"[ˌmetrəˈpɔlitən]", def:"adj.\n大都市的，首都的"};
+ dict9k["metropolitan"] = {ipa:"[ˌmetrəˈpɔlitən]", def:"adj.\n大都市的，首都的"};
  dict9k["mettle"] = {ipa:"['metl]", def:"n.\n勇气，斗志"};
  dict9k["mettlesome"] = {ipa:"['metlsəm]", def:"adj.\n精神抖擞的"};
  dict9k["microbe"] = {ipa:"['maikrəub]", def:"n.\n微生物"};

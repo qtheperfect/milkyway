@@ -157,19 +157,19 @@ function fillAllLabeled(s, words){
     var nLast=0
     var s1=""
     for (var i in sorted){
-	var n = sorted[i][0]
-	var l = sorted[i][1]
+	var charHead = sorted[i][0]
+	var charLength = sorted[i][1]
 	var voc= sorted[i][2]
 	var label=sorted[i][3]
 	var iRes
 	if (label)
-	    iRes=fillIn(nLast, n, l, s, label)
+	    iRes=fillIn(nLast, charHead, charLength, s, label)
 	else
-	    iRes=fillIn(nLast, n, l, s)
+	    iRes=fillIn(nLast, charHead, charLength, s)
 	iRes.voc=voc
 	s1 = s1 + iRes.enlonged
 	wordList.push(iRes)
-	nLast=n + l
+	nLast= charHead + charLength
     }
     res.enlonged = s1 + s.slice(nLast)
     res.enlonged = res.enlonged.split("\n").join("<br>")
@@ -226,6 +226,14 @@ function useRule(s, r, st=[], last=new Object()){
 	else if (r0 == "%"){
             last.reader=transSig
             return useRule(s, r.slice(1), st, last)
+	}
+	else if (r0 == "/"){
+	    if (st.length==0)
+		return null;
+	    else {
+		st.pop()
+		return useRule(s, r.slice(1), st, {} )
+	    }
 	}
 	else{
             s = last.worker(last.reader(r0))
@@ -301,9 +309,29 @@ function getSimpleFilter(){
   asd.innerHTML=allFill.enlonged
 */
 
+function getAudioEnclosure(){
+    var soundSrcs = {}
+    function res(w){
+	if (soundSrcs[w]) {
+	    return soundSrcs[w]
+	}
+	else {
+	    var o = document.createElement("audio")
+	    o.src = audiourl+w+".mp3"
+	    soundSrcs[w] = o
+	    return o
+	}
+    }
+    return res
+}
+
+var getAudio = getAudioEnclosure()
+
+
 function elemInfo(elem, allFiller1=allFiller){
     var eid=elem.id;
     var info = allFiller1.wordDict[eid]
+    info.audio = getAudio(info.voc)
     return info
 }
 function sendText(do_jump=true, removeDup=remove_dup){
@@ -394,8 +422,10 @@ function elemExplain(elem, cover=true, head=excise_cheat1, tail=excise_cheat2){
     var explain = getDef(dictList[voc], cover)
     if ( cover)
 	var explainHead = tailCover(voc, head, tail)
-    else
+    else {
 	var explainHead = voc + " &#8594 " + inText
+	info.audio.play()
+    }
     document.getElementById("explain-head").innerHTML=explainHead
     document.getElementById("explain-area").innerHTML=explain
 }
@@ -413,14 +443,15 @@ function elemBring(o, reserve=bringPreserve, ifExplain=true){
     var t = o.offsetTop - o.parentNode.offsetTop;
     demo.parentNode.scrollTop = t-reserve
     o.className="word-filler-current"
-    if (ifExplain)
-	elemExplain(o, state_in_excise)
+    //if (ifExplain)
+//	elemExplain(o, state_in_excise)
 }
 
 function elemClear(o,head=excise_cheat1, tail=excise_cheat2){
     currentInput=""
     elemCover(o, head, tail)
     elemBring(o)
+    elemExplain(o, true)
 }
 
 function elemFill(elem, s){
@@ -432,9 +463,10 @@ function elemFill(elem, s){
     elem.innerHTML =  s + covered
     if (s == inText.toLowerCase()){
 	elemModify(elem)
+	elemExplain(elem, false)
     }
     else{
-	elemExplain(elem)
+	elemExplain(elem, true)
     }
 }
 
@@ -447,7 +479,7 @@ function elemModify(e, inFilling=true){
     if (! elemCheck(e)){
 	if (inFilling){
 	    e.className="word-filler-current"
-	    elemExplain(e)
+	    //elemExplain(e)
 	}
 	else
 	    e.className="word-filler"
@@ -455,7 +487,7 @@ function elemModify(e, inFilling=true){
     }
     else {
 	elemReveal(e)
-	elemExplain(e, false)
+	//elemExplain(e, false)
 	return true
     }
 }
@@ -476,7 +508,7 @@ function startFill(){
     fillObjs=[ ...demo.getElementsByClassName("word-filler") ] 
     currentFill = 0
     coverAll()
-    fillCurrent()
+    //fillNext(0)
     fillObjs.forEach(e=>{e.className="word-filler"})
     if (! lastExclude)
 	alert("Finish the cloze using keyboard, pressing: \n ,/. to move back/forth; \n BACKSPACE/SPACE to clear the buffer;\n  1 / ENTER to show the partial / full solution of the blank.")
@@ -490,8 +522,12 @@ function fillNext(pace=1){
     currentInput=""
     var elem = fillObjs[currentFill]
     elemBring(elem)
-    if (! elemCheck(elem))
+    var elemState = true
+    if (! elemCheck(elem)){
+	elemState = false
 	elemClear(elem)
+    }
+    elemExplain(elem, ! elemState)
 }
 
 function fillPrevious(pace=1){
@@ -501,6 +537,11 @@ function fillPrevious(pace=1){
     currentInput=""
     var elem = fillObjs[currentFill]
     elemBring(elem)
+    var elemState = true
+    if (! elemCheck(elem)){
+	elemState = false
+    }
+    elemExplain(elem, ! elemState)
 }
 
 
@@ -612,11 +653,8 @@ function listWords(excludeLess=true){
 document.getElementById("show-answer").onclick=listWords
 
 function refillObjs(){
-    if (!state_in_excise )
-	return
-    else
-	fillObjs.forEach(e=>e.className="word-filler")
-	return
+    fillObjs.forEach(e=>e.className="word-filler")
+    return
 }
 document.getElementById("refill-clicker").onclick=refillObjs
 

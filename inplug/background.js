@@ -11,7 +11,7 @@ if (isff) {
 else if (isch) {
     chrome.browserAction.onClicked.addListener((tab)=>{
 	chrome.tabs.create({
-	    "url":chrome.extension.getURL('inplug/index.html'),
+	    "url":chrome.extension.getURL('index.html'),
 	    "active":true
 	})
     })

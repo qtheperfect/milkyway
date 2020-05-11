@@ -2,8 +2,8 @@
     "manifest_version":2,
     "name":"MilkyWay Cloze",
     "description":"An English learning program which develops your vocabulary from ANY context of articles you familiar with, containing an AI-aided vocabulary refiner associated with a cloze tester, which commences revolutionarily convenience in language learning", 
-    "version":"1.0",
-    "web_accessible_resources":["app/*", "inplug/*", "index.html", "https://milkyway.dns.army/*"],
+    "version":"2.0",
+    "web_accessible_resources":["app/*", "inplug/*", "audio/*",  "index.html"],
     "content_security_policy": "default-src 'self'; script-src 'self' 'sha256-rajK2rwHwasQh442emJY+Qtk/15S6X9XHbluQW7jSlw=' 'sha256-7H8OQKIzpa8HgDbseeWUfZOyISASxYcMJNlU7CZjmys='; ",
     "permissions":["storage"],
 //    "content_scripts":[

@@ -11,6 +11,7 @@ window.onload=()=>{
 }
 
 var baseServer = window.origin + window.path;
+var audiourl="audio/"
 
 if (chrome && chrome.storage && chrome.storage.local){
     window.cookout=(f)=>chrome.storage.local.get(['exciseuri'], (s)=>{f(s.exciseuri)})
@@ -24,3 +25,4 @@ else if (cookable.length <= 5 && cookedRecords[0].length>0){
 if (cookable.length>5) {
     window.cookout=f=>f(cookable)
 }
+
