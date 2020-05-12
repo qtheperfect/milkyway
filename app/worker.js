@@ -11,7 +11,7 @@ var excise_cheat1=0
 var excise_cheat2=1
 var remove_dup=true
 
-var url1 = window.location.origin + window.location.path
+var url1 = window.location.origin + window.location.pathname
 var urlData="data://application/json;charset=utf-8,"
 
 function getDataString(a, l, u=urlData){
@@ -111,7 +111,7 @@ function refreshChangeable(){
     var reviewLocation = getDataString(mainString, window.redundantList)
     head.href=reviewLocation
     head.download = "recorduri_" + getDate() + ".milkyway"
-    console.log(getDataString(mainString, window.redundantList, url1))
+    console.log(decodeURIComponent(getDataString(mainString, window.redundantList, url1)))
     window.cookin(decodeURIComponent(reviewLocation))
 }
 
@@ -308,25 +308,6 @@ function getSimpleFilter(){
   var allFill=fillAllLabeled(s, validWords, "word-filled")
   asd.innerHTML=allFill.enlonged
 */
-
-function getAudioEnclosure(){
-    var soundSrcs = {}
-    function res(w){
-	if (soundSrcs[w]) {
-	    return soundSrcs[w]
-	}
-	else {
-	    var o = document.createElement("audio")
-	    o.src = audiourl+w+".mp3"
-	    soundSrcs[w] = o
-	    return o
-	}
-    }
-    return res
-}
-
-var getAudio = getAudioEnclosure()
-
 
 function elemInfo(elem, allFiller1=allFiller){
     var eid=elem.id;
@@ -641,6 +622,7 @@ function listWords(excludeLess=true){
 	    [...demo.getElementsByClassName("word-filler-current")].forEach(e=>e.className="word-filler")
 	    var oo = document.getElementById(o.id.replace(/-exp$/, ""))
 	    elemBring(oo, 50, false)
+	    elemInfo(oo).audio.play()
 	    var cNew = fillObjs.findIndex(e=>e==oo)
 	    if (cNew && cNew >= 0){
 		currentFill = cNew

@@ -13,6 +13,25 @@ window.onload=()=>{
 var baseServer = window.origin + window.path;
 var audiourl="audio/"
 
+function getAudioEnclosure(){
+    var soundSrcs = {}
+    function res(w){
+	if (soundSrcs[w]) {
+	    return soundSrcs[w]
+	}
+	else {
+	    var o = document.createElement("audio")
+	    o.src = audiourl+w+".mp3"
+	    soundSrcs[w] = o
+	    return o
+	}
+    }
+    return res
+}
+
+var getAudio = getAudioEnclosure()
+
+
 if (chrome && chrome.storage && chrome.storage.local){
     window.cookout=(f)=>chrome.storage.local.get(['exciseuri'], (s)=>{f(s.exciseuri)})
     window.cookin=(s)=>{
