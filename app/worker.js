@@ -37,18 +37,18 @@ function loadString(search){
     }
     else
 	res.redundantList=[]
-    res.submiter = function(r=res){
-	if (r.article){
-	    window.article = r.article
-	    document.getElementById("maininput").value=r.article
+    res.submiter = function(switcharticle = true){
+	if (res.article && switcharticle){
+	    window.article = res.article
+	    document.getElementById("maininput").value=res.article
 	}
-	if (r.redundantList){
-	    window.lastExclude = r.lastExclude
-	    window.redundantList = [ ... new Set([...window.redundantList, ...r.redundantList])]
+	if (res.redundantList){
+	    window.lastExclude = res.lastExclude
+	    window.redundantList = [ ... new Set([...window.redundantList, ...res.redundantList])]
 	    //excludeRedundant()
 	}
 	var h=document.getElementById("changeable-head")
-	h.href=getDataString(r.article, r.redundantList)
+	h.href=getDataString(res.article, res.redundantList)
 	h.download="mw_"+getDate()+".txt"
     }
     return res
@@ -65,7 +65,7 @@ if (urlLoader.article || urlLoader.redundantList){
     urlLoader.submiter()
 }
 
-function fReader(fun){
+function fReader(fun, swa = true){
     var f = document.createElement("input")
     f.type="file"
     f.multiple="multiple";
@@ -76,18 +76,20 @@ function fReader(fun){
 	    var t=""
 	    r.onload=()=>{
 		t=r.result
-		fun(t)
+		fun(t, swa)
 	    }
 	    r.readAsText(x)})
     }
     f.click()
 }
 
-function loadAndSubmit(s){
-    loadString(s).submiter()
+function loadAndSubmit(s, swa = true){
+    loadString(s).submiter(swa)
 }
 
 document.getElementById("local-loader").onclick=()=>fReader(loadAndSubmit)
+document.getElementById("local-list").onclick=()=>fReader(loadAndSubmit, false)
+
 
 function refreshRedundant(){
     var redObjs = [ ...demo.getElementsByClassName("word-filler-done") ]
@@ -105,12 +107,15 @@ function getDate(){
 function refreshChangeable(){
     var head = document.getElementById("changeable-head")
     var mainString = document.getElementById("maininput").value
+    var l = mainString.replace(/^[\s\n]+|[\s\n]+$/g, '').split("\n")
+    if (l.length <= 0) l = ["milkyway"]
+    var title = l[l.length-1].replace(/^[\s\n]+|[\s\n]+$/g, '').slice(0, 20).replace(/[\s\n]+$/g, '')+"_"
     //var dateStr = getDate() + "\n";
     //var excludeStr = JSON.stringify(redundantList)
     //reviewLocation = window.location.origin + window.location.pathname + "?article=" + encodeURIComponent( dateStr + mainString ) + "&redundant="+encodeURIComponent(excludeStr)
     var reviewLocation = getDataString(mainString, window.redundantList)
     head.href=reviewLocation
-    head.download = "recorduri_" + getDate() + ".milkyway"
+    head.download = title + getDate() + ".milkyway"
     console.log(decodeURIComponent(getDataString(mainString, window.redundantList, url1)))
     window.cookin(decodeURIComponent(reviewLocation))
 }
@@ -494,7 +499,31 @@ function startFill(){
     if (! lastExclude)
 	alert("Finish the cloze using keyboard, pressing: \n ,/. to move back/forth; \n BACKSPACE/SPACE to clear the buffer;\n  1 / ENTER to show the partial / full solution of the blank.")
 }
+
 document.getElementById("excise-clicker").onclick=startFill
+
+var readState = []
+function startRead(cf = 0){
+    if (state_in_excise){
+	readState = []
+	return
+    }
+    // state_in_excise=true;
+    ([ ...demo.getElementsByClassName("word-filler-current") ]).forEach((e)=>{e.className="word-filler"});
+    fillObjs=[ ...demo.getElementsByClassName("word-filler") ] 
+    console.log(fillObjs.length)
+    currentFill = cf % fillObjs.length
+    console.log("currentFill:", currentFill)
+    console.log(fillObjs[currentFill])
+    //coverAll()
+    //fillNext(0)
+    elemBring(fillObjs[currentFill])
+    elemExplain(fillObjs[currentFill], false)
+    var info = elemInfo(fillObjs[currentFill])
+    readState.push(setTimeout(() => startRead(cf + 1), (info.audio.duration * 2.5 ) * 1000))
+}
+
+document.getElementById("start-reader").onclick = () => startRead(0)
 
 function fillNext(pace=1){
     var elem0  = fillObjs[currentFill]
@@ -586,6 +615,10 @@ function listWords(excludeLess=true){
     wordSet=[]
     var dictList=dictInUse()
     state_in_excise = false
+    if (readState && readState.length > 0){
+	readState.forEach(n => clearTimeout(n))
+	readState = []
+    }
     var words1=[ ...demo.getElementsByClassName("word-filler")]
     var words2=[ ...demo.getElementsByClassName("word-filler-current")]
     var words3=[ ...demo.getElementsByClassName("word-filler-done")]
