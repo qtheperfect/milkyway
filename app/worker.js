@@ -199,10 +199,10 @@ function allWords(s){
 }
 
 function useRule(s, r, st=[], last=new Object()){
-    if (r.length==0)
-	return s
-    else if (!s || s.length==0)
+    if (!s || s.length==0)
 	return null
+    else if (r.length==0)
+	return s
     else{
 	var ss = s[s.length-1]
 	var sHead = s.slice(0, s.length-1)
@@ -503,24 +503,24 @@ function startFill(){
 document.getElementById("excise-clicker").onclick=startFill
 
 var readState = []
-function startRead(cf = 0){
-    if (state_in_excise){
-	readState = []
-	return
-    }
+function startRead(){
+    var rate = document.getElementById("read-speed").value / 100.0
     // state_in_excise=true;
-    ([ ...demo.getElementsByClassName("word-filler-current") ]).forEach((e)=>{e.className="word-filler"});
-    fillObjs=[ ...demo.getElementsByClassName("word-filler") ] 
-    console.log(fillObjs.length)
-    currentFill = cf % fillObjs.length
-    console.log("currentFill:", currentFill)
-    console.log(fillObjs[currentFill])
+    if (readState.length == 0){
+	([ ...demo.getElementsByClassName("word-filler-current") ]).forEach((e)=>{e.className="word-filler"});
+	fillObjs=[ ...demo.getElementsByClassName("word-filler") ] 
+    }
+    if (! currentFill)
+	currentFill = 0
+    fillObjs.forEach(e => e.className="word-filler")
     //coverAll()
     //fillNext(0)
     elemBring(fillObjs[currentFill])
     elemExplain(fillObjs[currentFill], false)
+    currentFill = (currentFill + 1)% fillObjs.length
     var info = elemInfo(fillObjs[currentFill])
-    readState.push(setTimeout(() => startRead(cf + 1), (info.audio.duration * 2.5 ) * 1000))
+    readState.pop()
+    readState.push(setTimeout(() => startRead(), (info.audio.duration * (1 + rate) ) * 1000))
 }
 
 document.getElementById("start-reader").onclick = () => startRead(0)
@@ -630,7 +630,7 @@ function listWords(excludeLess=true){
     var words = words1.concat(words2).concat(words3)
     words2.forEach(e=>e.className="word-filler")
     
-    document.getElementById("show-answer").value= "" + (words1.length+words2.length) + "/" + words.length + " total"
+    document.getElementById("show-answer").value= "Pause: " + (words1.length+words2.length) + "/" + words.length  
     res = ""
     for (w of words){
 	var r = document.createElement("p")
@@ -654,7 +654,7 @@ function listWords(excludeLess=true){
 	o.onmousedown = ()=>{
 	    [...demo.getElementsByClassName("word-filler-current")].forEach(e=>e.className="word-filler")
 	    var oo = document.getElementById(o.id.replace(/-exp$/, ""))
-	    elemBring(oo, 50, false)
+	    elemBring(oo, 75, false)
 	    elemInfo(oo).audio.play()
 	    var cNew = fillObjs.findIndex(e=>e==oo)
 	    if (cNew && cNew >= 0){
