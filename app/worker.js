@@ -47,9 +47,10 @@ function loadString(search){
 	    window.redundantList = [ ... new Set([...window.redundantList, ...res.redundantList])]
 	    //excludeRedundant()
 	}
-	var h=document.getElementById("changeable-head")
-	h.href=getDataString(res.article, res.redundantList)
-	h.download="mw_"+getDate()+".txt"
+	// var h=document.getElementById("changeable-head")
+	// h.href=getDataString(res.article, res.redundantList)
+	// h.download="mw_"+getDate()+".txt"
+	refreshChangeable()
     }
     return res
 }
@@ -97,7 +98,9 @@ function refreshRedundant(){
     redObjs.forEach(e=>{redundantList.push(elemInfo(e).voc)});
 }
 function getDate(){
-    var dateStr = new Date().toLocaleString('zh-CN', {hour12:false})
+    // var dateStr = new Date().toLocaleString('zh-CN', {hour12:false})
+    var now = new Date()
+    var dateStr = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().replace(/\....Z$/g, "")
     dateStr = dateStr.split('/').join("-")
     dateStr = dateStr.split(':').join("-")
     dateStr = dateStr.split(" ").join("_")
@@ -108,14 +111,14 @@ function refreshChangeable(){
     var head = document.getElementById("changeable-head")
     var mainString = document.getElementById("maininput").value
     var l = mainString.replace(/^[\s\n]+|[\s\n]+$/g, '').split("\n")
-    if (l.length <= 0) l = ["milkyway"]
-    var title = l[l.length-1].replace(/^[\s\n]+|[\s\n]+$/g, '').slice(0, 20).replace(/[\s\n]+$/g, '')+"_"
+    if (l.length <= 0) l = ["milky-way"]
+    var title = l[l.length-1].replace(/^[\s\n]+|[\s\n]+$/g, '').slice(0, 25).replace(/[\s\n]+$/g, '')
     //var dateStr = getDate() + "\n";
     //var excludeStr = JSON.stringify(redundantList)
     //reviewLocation = window.location.origin + window.location.pathname + "?article=" + encodeURIComponent( dateStr + mainString ) + "&redundant="+encodeURIComponent(excludeStr)
     var reviewLocation = getDataString(mainString, window.redundantList)
     head.href=reviewLocation
-    head.download = title + getDate() + ".milkyway"
+    head.download = "AXV_" + getDate() + "_" + title + ".milkyway"
     console.log(decodeURIComponent(getDataString(mainString, window.redundantList, url1)))
     window.cookin(decodeURIComponent(reviewLocation))
 }
@@ -444,15 +447,16 @@ function elemFill(elem, s){
     var info = elemInfo(elem)
     var inText = info.inText
     var covered  =  tailCover(inText)
-    s = s.slice(0, inText.length)
-    covered = covered.slice(s.length)
-    elem.innerHTML =  s + covered
-    if (s == inText.toLowerCase()){
+    elem.innerHTML =  s // + covered
+       if (s == inText.toLowerCase()){
 	elemModify(elem)
 	elemExplain(elem, false)
     }
     else{
-	elemExplain(elem, true)
+	s = s.slice(0, inText.length)
+	covered = covered.slice(s.length)
+	document.getElementById("explain-head").innerHTML =  s + covered
+//	elemExplain(elem, true)
     }
 }
 
