@@ -345,7 +345,9 @@ function sendText(do_jump=true, removeDup=remove_dup){
     for (var o of fillObjs){
 	o.onmousedown = function(){
 	    elemExplain(this, false)
-	    currentFill = fillObjs.findIndex(e=>e==this)
+	    currentFill_1 = fillObjs.findIndex(e=>e==this)
+	    if (currentFill_1 >= 0)
+		currentFill = currentFill_1
 	} 
 	
 	//o.onmouseup = function(){var t = this.offsetTop - this.parentNode.offsetTop; console.log(t); demo.parentNode.scrollTop=t-100}
@@ -453,10 +455,11 @@ function elemFill(elem, s){
 	elemExplain(elem, false)
     }
     else{
+	elemExplain(elem, true)
 	s = s.slice(0, inText.length)
 	covered = covered.slice(s.length)
 	document.getElementById("explain-head").innerHTML =  s + covered
-//	elemExplain(elem, true)
+	elem.className = "word-filler-current"
     }
 }
 
@@ -514,7 +517,7 @@ function startRead(){
 	([ ...demo.getElementsByClassName("word-filler-current") ]).forEach((e)=>{e.className="word-filler"});
 	fillObjs=[ ...demo.getElementsByClassName("word-filler") ] 
     }
-    if (! currentFill)
+    if (! currentFill || currentFill < 0)
 	currentFill = 0
     fillObjs.forEach(e => e.className="word-filler")
     //coverAll()
@@ -531,7 +534,11 @@ document.getElementById("start-reader").onclick = () => startRead(0)
 
 function fillNext(pace=1){
     var elem0  = fillObjs[currentFill]
-    elemModify(elem0, false)
+    if (state_in_excise)
+	elemModify(elem0, false)
+    else if (elem0.className == "word-filler-current"){
+	elem0.className = "word-filler"
+    }
     currentFill = ( currentFill+pace ) % fillObjs.length
     currentInput=""
     var elem = fillObjs[currentFill]
@@ -546,7 +553,11 @@ function fillNext(pace=1){
 
 function fillPrevious(pace=1){
     var elem0  = fillObjs[currentFill]
-    elemModify(elem0, false)
+    if (state_in_excise)
+	elemModify(elem0, false)
+    else if (elem0.className == "word-filler-current"){
+	elem0.className = "word-filler"
+    }
     currentFill = ( (currentFill-pace)%fillObjs.length + fillObjs.length) % fillObjs.length
     currentInput=""
     var elem = fillObjs[currentFill]
