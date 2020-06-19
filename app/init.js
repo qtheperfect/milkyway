@@ -10,7 +10,7 @@ window.onload=()=>{
     [...document.querySelectorAll(".colorful-button, .dark-button")].forEach(b=>b.onkeydown=()=>b.blur())
 }
 
-var baseServer = window.origin + window.path;
+var baseServer = window.location.origin + window.location.pathname;
 var audiourl="audio/"
 
 function getAudioEnclosure(){
