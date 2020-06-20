@@ -416,6 +416,7 @@ function elemExplain(elem, cover=true, head=excise_cheat1, tail=excise_cheat2){
     else {
 	var explainHead = voc + " &#8594 " + inText
 	info.audio.play()
+	navigator.clipboard.writeText(voc)
     }
     document.getElementById("explain-head").innerHTML=explainHead
     document.getElementById("explain-area").innerHTML=explain
