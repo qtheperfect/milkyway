@@ -130,7 +130,8 @@ function fillIn(nLast, n, l, s, label="word-filler"){
     insThis.className=label
     insThis.id=label+"-"+n
     insThis.innerHTML=orgWord
-    var s1 = s.slice(nLast, n) + insThis.outerHTML
+    var preWord = s.slice(nLast, n).replace(/</g, "《").replace(/>/g, "》")
+    var s1 = preWord + insThis.outerHTML
     var res = new Object()
     res.objId = insThis.id
     res.inText=orgWord
@@ -349,18 +350,13 @@ function sendText(do_jump=true, removeDup=remove_dup){
 	    if (currentFill_1 >= 0)
 		currentFill = currentFill_1
 	} 
-	
 	//o.onmouseup = function(){var t = this.offsetTop - this.parentNode.offsetTop; console.log(t); demo.parentNode.scrollTop=t-100}
     }
     for (var o of document.getElementsByClassName("word-filler-dup")){
 	o.onmousedown = function (){elemExplain(this, false)}
     }
     listWords(false)
-    
-    
-
 }
-
 
 function tailCover(s, head=1, tail=1){
     var longtail = s.length-head
@@ -416,7 +412,8 @@ function elemExplain(elem, cover=true, head=excise_cheat1, tail=excise_cheat2){
     else {
 	var explainHead = voc + " &#8594 " + inText
 	info.audio.play()
-	navigator.clipboard.writeText(voc)
+	if (navigator.clipboard)
+	    navigator.clipboard.writeText(voc)
     }
     document.getElementById("explain-head").innerHTML=explainHead
     document.getElementById("explain-area").innerHTML=explain
@@ -431,7 +428,7 @@ function elemReveal(elem){
 
 
 var bringPreserve = demo.parentNode.getClientRects()[0].height/3
-function elemBring(o, reserve=bringPreserve, ifExplain=true){
+function elemBring(o, reserve=bringPreserve){
     var t = o.offsetTop - o.parentNode.offsetTop;
     demo.parentNode.scrollTop = t-reserve
     o.className="word-filler-current"
@@ -628,6 +625,7 @@ document.getElementById("maininput").onkeydown=(e)=>e.stopPropagation()
 
 
 function listWords(excludeLess=true){
+    [ ...demo.getElementsByClassName("word-filler-current")].forEach(e=>e.className="word-filler")
     wordSet=[]
     var dictList=dictInUse()
     state_in_excise = false
@@ -636,17 +634,15 @@ function listWords(excludeLess=true){
 	readState = []
     }
     var words1=[ ...demo.getElementsByClassName("word-filler")]
-    var words2=[ ...demo.getElementsByClassName("word-filler-current")]
-    var words3=[ ...demo.getElementsByClassName("word-filler-done")]
+    var words2=[ ...demo.getElementsByClassName("word-filler-done")]
 
     if (excludeLess)
 	refreshRedundant()
-    refreshChangeable()
     
-    var words = words1.concat(words2).concat(words3)
-    words2.forEach(e=>e.className="word-filler")
+    var words = words1.concat(words2)
+    words2.forEach
     
-    document.getElementById("show-answer").value= "Pause: " + (words1.length+words2.length) + "/" + words.length  
+    document.getElementById("show-answer").value= "Pause: " + (words1.length) + "/" + words.length  
     res = ""
     for (w of words){
 	var r = document.createElement("p")
@@ -659,7 +655,7 @@ function listWords(excludeLess=true){
 	w.id=info.objId
 	res = res + r.outerHTML
     }
-    document.getElementById("explain-head").innerHTML=wordSet.sort().join(" ")
+    document.getElementById("explain-head").innerHTML=words1.map(e => elemInfo(e).voc).sort().join(" ") + "<br>" + words2.map(e=>elemInfo(e).voc).sort().join(" ")
     document.getElementById("explain-area").innerHTML=res
 
     fillObjs=[...demo.querySelectorAll(".word-filler, .word-filler-done")]
@@ -670,12 +666,14 @@ function listWords(excludeLess=true){
 	o.onmousedown = ()=>{
 	    [...demo.getElementsByClassName("word-filler-current")].forEach(e=>e.className="word-filler")
 	    var oo = document.getElementById(o.id.replace(/-exp$/, ""))
-	    elemBring(oo, 75, false)
+	    elemBring(oo, 75)
 	    elemInfo(oo).audio.play()
 	    var cNew = fillObjs.findIndex(e=>e==oo)
 	    if (cNew && cNew >= 0){
 		currentFill = cNew
 	    }
+	    if (navigator.clipboard)
+		navigator.clipboard.writeText(elemInfo(oo).voc)
 	}
     })
     return res
