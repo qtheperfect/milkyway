@@ -141,7 +141,7 @@ function fillIn(nLast, n, l, s, label="word-filler"){
 function fillAll(s, words){
     var res = new Object()
     res.wordList = []
-    var sorted = words.sort((a,b)=>(a[0]>=b[0]))
+    var sorted = words.sort((a,b)=>(a[0]>=b[0]) ? 1 : -1)
     var nLast=0
     var s1=""
     for (var i in sorted){
@@ -343,15 +343,23 @@ function sendText(do_jump=true, removeDup=remove_dup){
 	refineList()
 
 
-    for (var o of fillObjs){
-	o.onmousedown = function(){
-	    elemExplain(this, false)
-	    currentFill_1 = fillObjs.findIndex(e=>e==this)
-	    if (currentFill_1 >= 0)
-		currentFill = currentFill_1
-	} 
+//    for (var o of fillObjs){
+    fillObjs.forEach(o => o.onmousedown = function(){
+	if (state_in_excise || elemBringMinor(o, 0)) {
+	    elemExplain(o, false)
+	}
+	else {
+	    listWords(false)
+	    elemBringMinor(o, 0)
+	}
+		    
+	currentFill_1 = fillObjs.findIndex(e=>e==this)
+	if (currentFill_1 >= 0)
+	    currentFill = currentFill_1
+    } )
+
 	//o.onmouseup = function(){var t = this.offsetTop - this.parentNode.offsetTop; console.log(t); demo.parentNode.scrollTop=t-100}
-    }
+    
     for (var o of document.getElementsByClassName("word-filler-dup")){
 	o.onmousedown = function (){elemExplain(this, false)}
     }
@@ -434,6 +442,15 @@ function elemBring(o, reserve=bringPreserve){
     o.className="word-filler-current"
     //if (ifExplain)
 //	elemExplain(o, state_in_excise)
+}
+function elemBringMinor(o, reserve=bringPreserve){
+    var exArea = document.getElementById("explain-area") 
+    var objElem = document.getElementById(o.id + "-exp")
+    if (! objElem)
+	return false
+    var t = objElem.offsetTop 
+    exArea.parentNode.scrollTop = t-reserve
+    return true
 }
 
 function elemClear(o,head=excise_cheat1, tail=excise_cheat2){
@@ -628,7 +645,6 @@ function listWords(excludeLess=true){
     [ ...demo.getElementsByClassName("word-filler-current")].forEach(e=>e.className="word-filler")
     wordSet=[]
     var dictList=dictInUse()
-    state_in_excise = false
     if (readState && readState.length > 0){
 	readState.forEach(n => clearTimeout(n))
 	readState = []
@@ -636,11 +652,12 @@ function listWords(excludeLess=true){
     var words1=[ ...demo.getElementsByClassName("word-filler")]
     var words2=[ ...demo.getElementsByClassName("word-filler-done")]
 
-    if (excludeLess)
+    if (excludeLess){
+	state_in_excise = false
 	refreshRedundant()
+    }
     
     var words = words1.concat(words2)
-    words2.forEach
     
     document.getElementById("show-answer").value= "Pause: " + (words1.length) + "/" + words.length  
     res = ""
@@ -655,7 +672,36 @@ function listWords(excludeLess=true){
 	w.id=info.objId
 	res = res + r.outerHTML
     }
-    document.getElementById("explain-head").innerHTML=words1.map(e => elemInfo(e).voc).sort().join(" ") + "<br>" + words2.map(e=>elemInfo(e).voc).sort().join(" ")
+
+    function ws2head(wds){
+	wds.sort((a, b)=>elemInfo(a).voc  >= elemInfo(b).voc ? 1 : -1).forEach( o => {
+	    var oHead = o.cloneNode()
+	    oHead.innerText = elemInfo(o).voc
+	    headDiv.appendChild(oHead)
+	    headDiv.append(" ")
+	    oHead.onmousedown = () => {
+		[...demo.getElementsByClassName("word-filler-current")].forEach(e=>e.className="word-filler")
+		elemBring(o, 80)
+	//	elemBringMinor(o, 10)
+		elemInfo(o).audio.play()
+		var cNew = fillObjs.findIndex(e=>e==o)
+		if (cNew && cNew >= 0){
+		    currentFill = cNew
+		}	
+		if (navigator.clipboard)
+		    navigator.clipboard.writeText(elemInfo(oo).voc)
+	    }
+	})
+    }
+    
+    var headDiv = document.getElementById("explain-head")
+    headDiv.innerText="" 
+    ws2head(words1)
+    headDiv.appendChild(document.createElement("br"))
+    ws2head(words2)
+
+//    document.getElementById("explain-head").innerHTML=words1.map(e => elemInfo(e).voc).sort().join(" ") + "<br>" + words2.map(e=>elemInfo(e).voc).sort().join(" ")
+
     document.getElementById("explain-area").innerHTML=res
 
     fillObjs=[...demo.querySelectorAll(".word-filler, .word-filler-done")]
@@ -667,6 +713,7 @@ function listWords(excludeLess=true){
 	    [...demo.getElementsByClassName("word-filler-current")].forEach(e=>e.className="word-filler")
 	    var oo = document.getElementById(o.id.replace(/-exp$/, ""))
 	    elemBring(oo, 75)
+	    // elemBringMinor(oo, 10)
 	    elemInfo(oo).audio.play()
 	    var cNew = fillObjs.findIndex(e=>e==oo)
 	    if (cNew && cNew >= 0){
