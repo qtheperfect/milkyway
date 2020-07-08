@@ -667,7 +667,7 @@ function listWords(excludeLess=true){
 	wordSet.push(info.voc)
 	w.innerHTML=info.voc
 	w.id += "-exp";
-	r.innerHTML = w.outerHTML + " -- " + getDef(dictList[info.voc])
+	r.innerHTML = w.outerHTML + " " + getDef(dictList[info.voc])
 	w.innerHTML=info.inText
 	w.id=info.objId
 	res = res + r.outerHTML
@@ -738,7 +738,7 @@ function getDef(d, cover=false){
     var res=""
 
     if (! cover && d.ipa){
-	res = res+d.ipa + "\n"
+	res = res+d.ipa + " -- \n"
     }
     if (d.def){
 	res = res+d.def
