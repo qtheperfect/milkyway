@@ -1,12 +1,13 @@
-#+TITLE:完形填空器 - 写作词汇增长神器
+#+TITLE: Milkyway-Cloze 英文词汇理解记忆
 
+在语境境中通过完形填空深度记忆英语词汇的神奇工具
 
 Milkyway - A Revolutionary Way For Learning Language Skills
 
 Generate clozes from any text, developing vocabulary using the context.
 
 
-[[./app/milkyway.html][Start]]
+[[https://fulgenssequar.github.io/mw/][Start]]
 
 
 * Code Explanation 
