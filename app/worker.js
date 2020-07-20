@@ -111,7 +111,7 @@ function refreshChangeable(){
     var head = document.getElementById("changeable-head")
     var mainString = document.getElementById("maininput").value
     var l = mainString.replace(/^[\s\n]+|[\s\n]+$/g, '').split("\n")
-    if (l.length <= 0) l = ["milky-way"]
+    if (l.length <= 0) l = ["Milky-Way welcomes you."]
     var title = l[l.length-1].replace(/^[\s\n]+|[\s\n]+$/g, '').slice(0, 25).replace(/[\s\n]+$/g, '')
     //var dateStr = getDate() + "\n";
     //var excludeStr = JSON.stringify(redundantList)
@@ -655,6 +655,7 @@ function listWords(excludeLess=true){
     if (excludeLess){
 	state_in_excise = false
 	refreshRedundant()
+	refreshChangeable()
     }
     
     var words = words1.concat(words2)
