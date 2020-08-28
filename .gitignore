@@ -481,5 +481,6 @@ deps/deps.jl
 /video
 /resources/video
 
-/rsyncWhat
+## /rsyncWhat
 /rsyncThis
+/.rsyncRemote

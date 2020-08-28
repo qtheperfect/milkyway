@@ -345,13 +345,8 @@ function sendText(do_jump=true, removeDup=remove_dup){
 
 //    for (var o of fillObjs){
     fillObjs.forEach(o => o.onmousedown = function(){
-	if (state_in_excise || elemBringMinor(o, 0)) {
-	    elemExplain(o, false)
-	}
-	else {
-	    listWords(false)
-	    elemBringMinor(o, 0)
-	}
+
+	elemExplain(o, false)
 		    
 	currentFill_1 = fillObjs.findIndex(e=>e==this)
 	if (currentFill_1 >= 0)
@@ -532,14 +527,16 @@ function startRead(){
 	([ ...demo.getElementsByClassName("word-filler-current") ]).forEach((e)=>{e.className="word-filler"});
 	fillObjs=[ ...demo.getElementsByClassName("word-filler") ] 
     }
+    var blankLast = fillObjs[currentFill]
+    fillObjs.forEach(e => e.className="word-filler")
+    currentFill = fillObjs.findIndex(o => o == blankLast ) 
     if (! currentFill || currentFill < 0)
 	currentFill = 0
-    fillObjs.forEach(e => e.className="word-filler")
     //coverAll()
     //fillNext(0)
     elemBring(fillObjs[currentFill])
     elemExplain(fillObjs[currentFill], false)
-    currentFill = (currentFill + 1)% fillObjs.length
+    currentFill = (currentFill + 1) % fillObjs.length
     var info = elemInfo(fillObjs[currentFill])
     readState.pop()
     readState.push(setTimeout(() => startRead(), (info.audio.duration * (1 + rate) ) * 1000))
@@ -642,6 +639,7 @@ document.getElementById("maininput").onkeydown=(e)=>e.stopPropagation()
 
 
 function listWords(excludeLess=true){
+
     [ ...demo.getElementsByClassName("word-filler-current")].forEach(e=>e.className="word-filler")
     wordSet=[]
     var dictList=dictInUse()
@@ -660,6 +658,8 @@ function listWords(excludeLess=true){
     
     var words = words1.concat(words2)
     
+    var orgElem = fillObjs[currentFill]
+
     document.getElementById("show-answer").value= "Pause: " + (words1.length) + "/" + words.length  
     res = ""
     for (w of words){
@@ -706,6 +706,12 @@ function listWords(excludeLess=true){
     document.getElementById("explain-area").innerHTML=res
 
     fillObjs=[...demo.querySelectorAll(".word-filler, .word-filler-done")]
+    if (orgElem){
+	var cf1 = fillObjs.findIndex( o => o == orgElem )
+	if (cf1 >= 0)
+	    currentFill = cf1
+	elemBringMinor(orgElem, 0)
+    }
 
     var allExp = [... document.getElementById("explain-area").querySelectorAll(".word-filler,.word-filler-current, .word-filler-done")]
     allExp.forEach(o=> {
