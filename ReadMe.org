@@ -1,31 +1,38 @@
-#+TITLE: Milkyway-Cloze: A Revolutionary Way For Learning Language Skills 英文词汇理解记忆
+#+TITLE: Milkyway-Cloze: Deep Congnitive Vocabulary Learning 
+#+OPTIONS: toc:nil
 
-* Quick and Efficient Online English Vocabulary Memory Tool
 ---------
+- *Quick and Efficient ONLINE English Vocabulary Memory Tool*
 - *利用语境迅速深度记忆英语词汇的神奇工具*
-- *コンテキスト内ですばやく効率的な英語の記憶の魔法*
-- *문맥 내에서 빠르고 효율적인 영어 기억력 마법*
-- *быстрая эффективная английская магия памяти в контексте*
-- *سحر الذاكرة الإنجليزية سريع وفعال في السياق*
+- *コンテキストを使用した迅速かつ効率的なオンライン英語語彙記憶魔法ツール*
+- *컨텍스트를 사용하는 빠르고 효율적인 온라인 영어 어휘 메모리 마법 도구*
+- *Быстрый и эффективный онлайн-инструмент для запоминания английского словаря с помощью контекста*
+- *أداة سحرية للذاكرة عبر الإنترنت سريعة وفعالة باستخدام السياق*
 ----------
 
-*Generate clozes from any text ON-LINE.*
-*Develop deep and cognitive vocabulary memory using the context.*
+* Overview
+Milkyway-cloze is a web application for vocabulary learning, which 
 
++ *Generates vocabularies ONLINE using any article as context.*
+
++ *And helps to develop deep and cognitive vocabulary memory by CLOZE practice.*
+
+#+ATTR_HTML: :width 80%
 [[./inplug/pic1.png]]
 
+#+ATTR_HTML: :width 80% 
 [[./inplug/pic2.png]]
 
-[[https://fulgenssequar.github.io/mw/?rdme][Start]]
+[[https://fulgenssequar.github.io/mw/?rdme][Try Now]]
 
-* Functions:  
+* Functions  
 ** Select a level to choose the vocabulary for learning.
  
-** PASTE the article and generate the vocabulary.
+** PASTE the article and click START.
    
-**  Click CLOZE to start spelling practice.
+**  Click CLOZE to launch the spelling practice.
 
-*** Key maps:
+*** Control keys for the cloze:
 - *,Comma* / *.Dot* : previous / next blank
 - *SPACE* (or *BACKSPACE*): clear the current blank
 - *4*: toggle marks of the current blank 
@@ -51,10 +58,10 @@
    
 * Code Explanation 
 
-** rules.js:
+** rules.js
 
    The transformation rules for English postfixes.
-   You may modify or contribute to the items to capture more words following the examples bellow: 
+   You may contribute to the clauses to capture more words following the examples bellow: 
    
 *** -s
     meets -> meet
@@ -73,8 +80,9 @@
 - %s = same charactor
 - $ =  restore last deleted
   
-
-
+* About
+  Please check the project at [[https://github.com/fulgenssequar/milkyway/][Github]] and [[https://fulgenssequar.github.io/contact][contact]] the [[https://keys.openpgp.org/vks/v1/by-fingerprint/2C7E1AD9F8C692D887C07F176819D81B0971C2C4][author]] for more information.
+  
 
 
 
