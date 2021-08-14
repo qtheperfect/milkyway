@@ -17,13 +17,14 @@ var urlData="data://application/json;charset=utf-8,"
 function getDataString(a, l, u=urlData){
     var eea = encodeURIComponent(encodeURIComponent(getDate()+"\n"+a))
     var eel = encodeURIComponent(encodeURIComponent(JSON.stringify(l)))
-    u += "?article="+eea+"&redundant="+eel
+    u += "?article="+eea+"&redundant="+eel+"&theme="+window.currentThemeIndex
     return u;
 }
 
 function loadString(search){
     var article=search.match(/article=([^&]+)/)
     var lastExclude=search.match(/redundant=([^&]+)/)
+    var theme=search.match(/theme=([^&]+)/)
     var res={}
     if (article){
 	article=article[1]
@@ -37,11 +38,13 @@ function loadString(search){
     }
     else
 	res.redundantList=[]
+    if (theme)
+	res.theme = theme[1] 
     res.submiter = function(switcharticle = true){
 	if (res.article && switcharticle){
 	    window.article = res.article
 	    document.getElementById("maininput").value=res.article
-	    sendText()
+	    sendText(false)
 	}
 	if (res.redundantList){
 	    window.lastExclude = res.lastExclude
@@ -52,14 +55,15 @@ function loadString(search){
 	// var h=document.getElementById("changeable-head")
 	// h.href=getDataString(res.article, res.redundantList)
 	// h.download="mw_"+getDate()+".txt"
-	listWords()
+	listWords(false)
+	if (res.theme)
+	    changeTheme(res.theme)
     }
     return res
 }
 
 window.cookout((s)=>{
     loadString(s).submiter();
-    sendText(false);excludeRedundant();
     window.scroll(0, demo.parentNode.offsetTop-30)
 })
 	       
