@@ -3,7 +3,7 @@
     <head>
 	<meta charset="utf-8">
 	<title id="title">Milkyway - Awesome AI-Aided Language Skill Enhancement</title>
-	<link rel="stylesheet" href="app/milkyway.css" type="text/css"/>
+	<link id="overall-style" rel="stylesheet" href="app/milkyway-light.css" type="text/css"/>
 	<script src="app/dict7k.js"></script>
 	<script src="app/badList.js"></script>
 	<script src="app/dictEE.js"></script>
@@ -15,6 +15,9 @@
     </head>
     <body class="body"> 
 	<center><h1>Milkyway -  A Cloze Practice Website</h1></center>
+	<center><input type="button" class="dark-button" id="overall-restyle" class="colorful-button" value="[　　　　Switch To DARK Theme　　　　 ]"/ onclick="changeTheme()">
+	<p> </p>
+	</center>
 	<center>Your English level:
 	    <select id="nonsense-voting" class="colorful-button">
 		<option value="dictList"  >cet-4</option>
@@ -56,7 +59,7 @@ Dickens_TaleOfTwoCities          ---- [The beginning of the last line implicates
 	  <input type="button" class="dark-button" value="Load" id="local-loader"  onkeydown="document.body.onkeydown" /> 
 	  <a id="changeable-head" href="." class="dark-button" > Export </a>
 	</span>
-	    Read Interval:
+	     _&#x1f3c7 Reading Interval:
 	    <input type="range" id="read-speed" max="600" min="0" value="150"/>
 	
 	</div>

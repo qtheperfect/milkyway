@@ -41,16 +41,18 @@ function loadString(search){
 	if (res.article && switcharticle){
 	    window.article = res.article
 	    document.getElementById("maininput").value=res.article
+	    sendText()
 	}
 	if (res.redundantList){
 	    window.lastExclude = res.lastExclude
 	    window.redundantList = [ ... new Set([...window.redundantList, ...res.redundantList])]
-	    //excludeRedundant()
+	    excludeRedundant()
 	}
+
 	// var h=document.getElementById("changeable-head")
 	// h.href=getDataString(res.article, res.redundantList)
 	// h.download="mw_"+getDate()+".txt"
-	refreshChangeable()
+	listWords()
     }
     return res
 }
@@ -345,12 +347,11 @@ function sendText(do_jump=true, removeDup=remove_dup){
 
 //    for (var o of fillObjs){
     fillObjs.forEach(o => o.onmousedown = function(){
-
-	elemExplain(o, false)
-		    
 	currentFill_1 = fillObjs.findIndex(e=>e==this)
 	if (currentFill_1 >= 0)
 	    currentFill = currentFill_1
+	elemExplain(o, false)
+
     } )
 
 	//o.onmouseup = function(){var t = this.offsetTop - this.parentNode.offsetTop; console.log(t); demo.parentNode.scrollTop=t-100}
@@ -367,7 +368,7 @@ function tailCover(s, head=1, tail=1){
     var starNum=longtail-tail
     starNum = starNum>=0 ? starNum : 0
     
-    return s.slice(0,head) + "*".repeat(starNum)+s.slice(s.length-tail, s.length)
+    return s.slice(0,head) + "_".repeat(starNum)+s.slice(s.length-tail, s.length)
 }
 
 
@@ -420,6 +421,7 @@ function elemExplain(elem, cover=true, head=excise_cheat1, tail=excise_cheat2){
     }
     document.getElementById("explain-head").innerHTML=explainHead
     document.getElementById("explain-area").innerHTML=explain
+    showIndexInfo(currentFill, fillObjs.length)
 }
 
 function elemReveal(elem){
@@ -579,6 +581,13 @@ function fillPrevious(pace=1){
 	elemState = false
     }
     elemExplain(elem, ! elemState)
+}
+
+function showIndexInfo(i, n){
+    var ar = document.getElementById("explain-area")
+    var info = document.createElement("p")
+    info.innerHTML= " ---- " + (i + 1) + " of " + n + " ---- "
+    ar.appendChild(info)
 }
 
 
