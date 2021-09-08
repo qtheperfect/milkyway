@@ -4,8 +4,6 @@
 /* ===================================================================== */
 
 .body{
-    background:rgba(40,40,30);/*rgba(220,200,180);*/
-    color:rgba(220,220,220);
     margin:0px;
 }
 
@@ -13,12 +11,9 @@
     margin-left:10px;
     width:98%;
     height:300px;
-    color:#ffa31a;
-    background:black;
 }
 
 #demo-container{
-    background:black;
     width:100%;
     height:93vh;
     margin:2px;
@@ -27,13 +22,12 @@
 }
 
 #explain-head{
-    color:lightblue;
     font-size:110%;
     font-weight:bold;
     font-family:monospace;
 }
 #explain-area{
-    background:black;
+    border：solid 10px;
 }
 
 
@@ -49,8 +43,6 @@
 }
 
 .colorful-button{
-    background:#ffa31a;
-    color:black;
     margin:0px;
     border:0px;
     padding:3px;
@@ -58,34 +50,32 @@
     //float:left;
 }
 .dark-button{
-    color:#ffa31a;
-    background:black;
     border:solid 1px;
-    border-color:#ffa31a;;
     padding:3px;
     border-radius:8px;
     //float:left;
 }
 
 .word-filler {
-    color:#ffa31a;
     font-weight:bold;
-    font-size:125%;
+//    font-size:125%;
     margin-left:0.05in;
     margin-right:0.05in;
+    font-family:monospace;
 }
 
 .word-filler-current {
-    color:pink;
     //font-size:145%;
-    border:1px solid rgba(255,170,0);
     font-family:monospace;
     // margin-right:6%;
 }
 
 .word-filler-done {
-    color: #00D7D7;
+//    color: #01a756;
+   // text-decoration: underline;
+   // text-decoration-color: 01a756;
     font-weight:bold;
+    font-family:monospace;
 }
 
 .word-filler-dup{
@@ -109,10 +99,9 @@
 }
 
 #demo{
-    width:100%; 
-    border:solid 1px gray; 
+    width:100%;
+    border:solid 1px gray;
 }
 
 .red-zone{
-    color:#fc2200;
 }

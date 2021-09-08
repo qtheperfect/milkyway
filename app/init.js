@@ -50,7 +50,7 @@ if (cookable.length>5) {
 window.currentThemeIndex = 0
 window.themeList = [
     {noter:"Switch To DARK Theme", href:"app/milkyway-light.css"},
-    {noter:"Switch To LIGHT Theme", href:"app/milkyway.css"}
+    {noter:"Switch To LIGHT Theme", href:"app/milkyway-dark.css"}
 ]
     
 function changeTheme(themeNum  = -1){

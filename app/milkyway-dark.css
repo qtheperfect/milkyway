@@ -1,0 +1,63 @@
+
+* {box-sizing: border-box;}
+   
+/* ===================================================================== */
+
+.body{
+    background:rgba(40,40,30);/*rgba(220,200,180);*/
+    color:rgba(220,220,220);
+}
+
+#maininput {
+    color:#ffa31a;
+    background:black;
+}
+
+#demo-container{
+    background:black;
+}
+
+#explain-head{
+    color:lightblue;
+}
+#explain-area{
+    background:black;
+}
+
+
+
+.demo-area{
+}
+
+.colorful-button{
+    background:#ffa31a;
+    color:black;
+    //float:left;
+}
+.dark-button{
+    color:#ffa31a;
+    background:black;
+    border-color:#ffa31a;;
+}
+
+.word-filler {
+    color:#ffa31a;
+}
+
+.word-filler-current {
+    color:pink;
+    border:1px solid rgba(255,170,0);
+}
+
+.word-filler-done {
+    color: #00D7D7;
+}
+
+
+#demo{
+    border:solid 1px gray; 
+}
+
+.red-zone{
+    color:#fc2200;
+}

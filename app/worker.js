@@ -335,7 +335,7 @@ function sendText(do_jump=true, removeDup=remove_dup){
     s=s.replace(/([a-zA-Z]+)+-\n([a-zA-Z]+)/g, "$1$2\n")
     if (do_jump){
 	window.scroll(0, demo.parentNode.offsetTop-30)
-	demo.style.backgroundImage="url(\"" + baseServer + "/text-faces/?article="+encodeURIComponent(s)+"_large.png\")"
+	demo.style.backgroundImage="url(\"" + baseServer + "/text-faces/?article="+encodeURIComponent(s)+"&redundantList="+encodeURIComponent(encodeURIComponent(JSON.stringify(redundantList)))+"__large.png\")"
 	refreshChangeable()
     }
     var words = allWords(s)
@@ -548,7 +548,7 @@ function startRead(){
     readState.push(setTimeout(() => startRead(), (info.audio.duration * (1 + rate) ) * 1000))
 }
 
-document.getElementById("start-reader").onclick = () => startRead(0)
+document.getElementById("start-reader").onclick = startRead
 
 function fillNext(pace=1){
     var elem0  = fillObjs[currentFill]
@@ -592,6 +592,12 @@ function showIndexInfo(i, n){
     var info = document.createElement("p")
     info.innerHTML= " ---- " + (i + 1) + " of " + n + " ---- "
     ar.appendChild(info)
+
+    var listCaller = document.createElement("div")
+    listCaller.className = "dark-button"
+    listCaller.onclick = e => listWords(true)
+    listCaller.innerText = "Back To Word List"
+    ar.appendChild(listCaller)
 }
 
 
