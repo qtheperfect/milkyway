@@ -435,15 +435,27 @@ function elemReveal(elem){
     elem.className="word-filler-done"
 }
 
+var elemNoter1 = document.createElement("span")
+var elemNoter2 = document.createElement("span")
+elemNoter1.className = "current-noter"
+elemNoter2.className = "current-noter"
+elemNoter2.innerHTML="\u25c5"
+elemNoter1.innerHTML="\u25bb"
+
 
 var bringPreserve = demo.parentNode.getClientRects()[0].height/3
-function elemBring(o, reserve=bringPreserve){
+function elemBring(o, reserve=bringPreserve, fill = true){
     var t = o.offsetTop - o.parentNode.offsetTop;
     demo.parentNode.scrollTop = t-reserve
-    o.className="word-filler-current"
-    //if (ifExplain)
-//	elemExplain(o, state_in_excise)
+//    o.className="word-filler-current"
+    if (fill)
+	o.className="word-filler-current"
+    else {
+	o.prepend(elemNoter1)
+	o.appendChild(elemNoter2)
+    }
 }
+
 function elemBringMinor(o, reserve=bringPreserve){
     var exArea = document.getElementById("explain-area") 
     var objElem = document.getElementById(o.id + "-exp")
@@ -738,15 +750,16 @@ function listWords(excludeLess=true){
 	o.onmousedown = ()=>{
 	    [...demo.getElementsByClassName("word-filler-current")].forEach(e=>e.className="word-filler")
 	    var oo = document.getElementById(o.id.replace(/-exp$/, ""))
-	    elemBring(oo, 75)
+	    elemBring(oo, 75, false)
 	    // elemBringMinor(oo, 10)
-	    elemInfo(oo).audio.play()
+	    ooInf = elemInfo(oo)
+	    ooInf.audio.play()
 	    var cNew = fillObjs.findIndex(e=>e==oo)
 	    if (cNew && cNew >= 0){
 		currentFill = cNew
 	    }
 	    if (navigator.clipboard)
-		navigator.clipboard.writeText(elemInfo(oo).voc)
+		navigator.clipboard.writeText(ooInf.voc)
 	}
     })
     return res
