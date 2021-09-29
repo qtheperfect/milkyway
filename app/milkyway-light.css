@@ -9,6 +9,12 @@
 //    margin:0px;
 }
 
+div {
+    scrollbar-color:#ffcc88 #330000 ;
+    scrollbar-width: 5px;
+}
+
+
 #maininput {
  //   margin-left:10px;
  //   width:98%;
@@ -26,13 +32,14 @@
 }
 
 .colorful-button{
-    background:#afe3ea;
+    background:#efca73;
+    border: 1px solid #ff838a;
     color:black;
 }
 .dark-button{
-    color:#9fd3ca;
+    color:#efc37a;
     background:#0d1d29;
-    border-color:#0fc3ca;;
+    border-color:#cfc3ca;;
 }
 
 .word-filler {
@@ -60,3 +67,4 @@
 .red-zone{
     color:#fc2200;
 }
+

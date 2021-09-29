@@ -8,6 +8,11 @@
     color:rgba(220,220,220);
 }
 
+div {
+    scrollbar-color: #993300 #110011;
+    scrollbar-width: 8px;
+}
+
 #maininput {
     color:#ffa31a;
     background:black;
@@ -61,3 +66,5 @@
 .red-zone{
     color:#fc2200;
 }
+
+

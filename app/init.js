@@ -32,8 +32,17 @@ function getAudioEnclosure(){
 
 var getAudio = getAudioEnclosure()
 
+function getOrElse(o, l){
+    if (l.length == 0)
+	return o
+    else if (o == undefined)
+	return o
+    else
+	return getOrElse(o[l[0]], l.slice(1))
+}
 
-if (chrome && chrome.storage && chrome.storage.local){
+var pluginStorage = getOrElse(window, ["chrome", "storage", "local"])
+if (pluginStorage){
     window.cookout=(f)=>chrome.storage.local.get(['exciseuri'], (s)=>{f(s.exciseuri)})
     window.cookin=(s)=>{
 	chrome.storage.local.set({"exciseuri":s}, ()=>console.log(" <-localdata set")) 
@@ -46,23 +55,23 @@ if (cookable.length>5) {
     window.cookout=f=>f(cookable)
 }
 
-
-window.currentThemeIndex = 0
-window.themeList = [
-    {noter:"Switch To DARK Theme", href:"app/milkyway-light.css"},
-    {noter:"Switch To LIGHT Theme", href:"app/milkyway-dark.css"}
-]
     
 function changeTheme(themeNum  = -1){
+    var themeList = [
+	{noter:"Switch To DARK Theme", href:"app/milkyway-light.css"},
+	{noter:"Switch To LIGHT Theme", href:"app/milkyway-dark.css"}
+    ]
     var css = document.getElementById("overall-style")
     var styleButton = document.getElementById("overall-restyle")
-    if (themeNum >= 0)
-	var ci = themeNum % window.themeList.length 
-    else if (window.currentThemeIndex != NaN)
-	var ci = (window.currentThemeIndex + 1) % window.themeList.length
-    else
-	var ci = 0
-    window.currentThemeIndex = ci 
-    styleButton.value = window.themeList[ci].noter
-    css.href = window.themeList[ci].href
+    var currentThemeIndex = styleButton.attributes["currentThemeIndex"]
+    currentThemeIndex = currentThemeIndex ? (currentThemeIndex.value) : 1
+    if (themeNum >= 0){
+	currentThemeIndex = themeNum 
+    }
+    var c0 = currentThemeIndex % themeList.length
+    var c1 = (c0 + 1) % themeList.length
+    
+    styleButton.value = themeList[c0].noter
+    css.href = themeList[c0].href
+    styleButton.setAttribute("currentThemeIndex", c1)
 }

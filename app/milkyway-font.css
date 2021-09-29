@@ -19,6 +19,7 @@
     margin:2px;
     border-top:solid;
     bolder-right:solid;
+    position:relative
 }
 
 #explain-head{
@@ -45,13 +46,13 @@
 .colorful-button{
     margin:0px;
     border:0px;
-    padding:3px;
+    padding:5px;
     border-radius:8px;
     //float:left;
 }
 .dark-button{
     border:solid 1px;
-    padding:3px;
+    padding:5px;
     border-radius:8px;
     //float:left;
 }
@@ -62,12 +63,14 @@
     margin-left:0.05in;
     margin-right:0.05in;
     font-family:monospace;
+    position:relative;
 }
 
 .word-filler-current {
     //font-size:145%;
     font-family:monospace;
     // margin-right:6%;
+    position:relative;
 }
 
 .word-filler-done {
@@ -76,6 +79,8 @@
    // text-decoration-color: 01a756;
     font-weight:bold;
     font-family:monospace;
+    animation:blinkingText 0.4s 1;
+    position:relative;
 }
 
 .word-filler-dup{
@@ -84,7 +89,7 @@
 
 #explain-container{
     border-left:dotted 1px grey;
-    overflow-y:scroll;
+    overflow-y:auto;
     height:93vh;
     position:absolute;
     left:65%;
@@ -101,14 +106,51 @@
 #demo{
     width:100%;
     border:solid 1px gray;
+    overflow-x:hide; 
 }
 
 .red-zone{
 }
 
-.current-noter{
-    color:blue;
+.current-noter-container{
+    position:absolute;
+    bottom:-0.5ex;
+    width:0px;
+    overflow-x: visible;
+}
+.current-noter-left{
+    color: #FF0000BB;
     font-size: 120%;
     font-weight:bold;
-    text-shadow: 1px 1px red, -1px -1px red, 1px -1px red, -1px 1px red;
+    /*text-shadow: 1px 1px black, -1px -1px black, 1px -1px black, -1px 1px black;*/
+    animation:slidingTextLeft 0.1s 1;
+    position:relative;
+    left:-1ch;
+}
+
+.current-noter-right{
+    color: #FF0000BB;
+    font-size: 120%;
+    font-weight:bold;
+    /*text-shadow: 1px 1px black, -1px -1px black, 1px -1px black, -1px 1px black;*/
+    animation:slidingTextRight 0.2s 1;
+    position:relative;
+    right:5ch;
+}
+
+
+@keyframes blinkingText{
+    0%{     color: #cF8;    }
+    30%{    color: #F29; }
+    60%{   color: #33F;    }
+}
+
+@keyframes slidingTextLeft{
+    from{ left:-1em; }
+    to{ left:-1ch; }
+}
+
+@keyframes slidingTextRight{
+    from{ right:10ch; }
+    to{ right:5ch; }
 }

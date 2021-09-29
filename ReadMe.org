@@ -25,7 +25,8 @@ Milkyway-cloze is a web application for vocabulary learning, which
 
 [[https://fulgenssequar.github.io/mw/?rdme][Try Now]]
 
-* Functions  
+* Start Up:
+
 ** Select a level to choose the vocabulary for learning.
  
 ** PASTE the article and click START.
@@ -33,12 +34,12 @@ Milkyway-cloze is a web application for vocabulary learning, which
 **  Click CLOZE to launch the spelling practice.
 
 *** Control keys for the cloze:
-- *,Comma* / *.Dot* : previous / next blank
+-  *,-Comma* / *.-Dot*: previous / next blank
 - *SPACE* (or *BACKSPACE*): clear the current blank
 - *4*: toggle marks of the current blank 
 - *5*: complete the current blank 
 - *1*: show partial answer of the current blank
-- *;SEMI-COLON* (or *ENTER*): show full answer of the current blank 
+- *;-SEMICOLON* (or *ENTER*): show full answer of the current blank 
 - *9*: the 5th previous blank
 - *0*: the 5th next  blank
 
@@ -47,41 +48,42 @@ Milkyway-cloze is a web application for vocabulary learning, which
    
 ** EXPORT or LOAD the study record.
    - The last line of the text is used to generate the file name.
-   - The date is added automatically.
-   - The current record is only refreshed each time you click PAUSE.
+   - The date is added automatically to the filename.
+   - The learning record is only refreshed each time you click PAUSE.
 
 ** IMPORT-LISTS: Load multiple record files to exclude the redundant words
    
-   Any word marked as blue in imported files will be automatically marked blue in the present article.
+   The words marked as blue in imported files will be automatically marked blue in the present article.
 
-   *Blue marks are only rendered after you click EXCLUDE-REDUNDANT*
    
 * Code Explanation 
 
 ** rules.js
 
-   The transformation rules for English postfixes.
-   You may contribute to the clauses to capture more words following the examples bellow: 
+   The transformation rules of English postfixes are stored as a javascript /Array<String>/.
+
+   Custom clauses can be inserted in order to capture more word variations following the examples bellow: 
    
-*** -s
+*** Rule String: -s
     meets -> meet
     
-*** -g-n-i+e
+*** Rule String: -g-n-i+e
     voting -> vote
 
-*** -s-e-i+y
+*** Rule String: -s-e-i+y
     treaties -> treaty
     
-*** -g-n-i-%2-%s-%1$$
+*** Rule String: -g-n-i-%2-%s-%1$$
    sitting -> sit
    
-- %1 = aeiou
-- %2 = bcdfghjklmnpqrstvwxyz
-- %s = same charactor
-- $ =  restore last deleted
+   /Explain:/
+- %1 = A vowel letter
+- %2 = A consonant letter
+- %s = Same letter as previous deleted
+- $ =  Restore the letter on the stack top
   
 * About
-  Please check the project at [[https://github.com/fulgenssequar/milkyway/][Github]] and [[https://fulgenssequar.github.io/contact][contact]] the [[https://keys.openpgp.org/vks/v1/by-fingerprint/2C7E1AD9F8C692D887C07F176819D81B0971C2C4][author]] for more information.
+  Please check the project at [[https://github.com/fulgenssequar/milkyway/][Github]] or [[https://fulgenssequar.github.io/pgp/?contact=gh-rdm][contact]] the [[https://keys.openpgp.org/vks/v1/by-fingerprint/2C7E1AD9F8C692D887C07F176819D81B0971C2C4][author]] for more information.
   
 
 

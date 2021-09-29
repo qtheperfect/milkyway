@@ -405,6 +405,11 @@ function excludeRedundant(){
 }
 document.getElementById("exclude-clicker").onclick=excludeRedundant
 
+function word2board(w){
+    if (navigator.clipboard)
+	navigator.clipboard.writeText(w)
+}
+
 
 
 function elemExplain(elem, cover=true, head=excise_cheat1, tail=excise_cheat2){
@@ -420,8 +425,7 @@ function elemExplain(elem, cover=true, head=excise_cheat1, tail=excise_cheat2){
     else {
 	var explainHead = voc + " &#8594 " + inText
 	info.audio.play()
-	if (navigator.clipboard)
-	    navigator.clipboard.writeText(voc)
+	word2board(voc)
     }
     document.getElementById("explain-head").innerHTML=explainHead
     document.getElementById("explain-area").innerHTML=explain
@@ -435,12 +439,22 @@ function elemReveal(elem){
     elem.className="word-filler-done"
 }
 
+
+var elemNoter1c = document.createElement("span")
+var elemNoter2c = document.createElement("span")
+elemNoter1c.className = "current-noter-container"
+elemNoter2c.className = "current-noter-container"
+
 var elemNoter1 = document.createElement("span")
 var elemNoter2 = document.createElement("span")
-elemNoter1.className = "current-noter"
-elemNoter2.className = "current-noter"
-elemNoter2.innerHTML="\u25c5"
-elemNoter1.innerHTML="\u25bb"
+elemNoter1.className = "current-noter-left"
+elemNoter2.className = "current-noter-right"
+
+elemNoter1c.appendChild(elemNoter1)
+elemNoter2c.appendChild(elemNoter2)
+
+elemNoter1.innerHTML="\u2770______"
+elemNoter2.innerHTML="_____\u2771"
 
 
 var bringPreserve = demo.parentNode.getClientRects()[0].height/3
@@ -451,8 +465,8 @@ function elemBring(o, reserve=bringPreserve, fill = true){
     if (fill)
 	o.className="word-filler-current"
     else {
-	o.prepend(elemNoter1)
-	o.appendChild(elemNoter2)
+	o.prepend(elemNoter1c)
+	o.appendChild(elemNoter2c)
     }
 }
 
@@ -552,7 +566,7 @@ function startRead(){
 	currentFill = 0
     //coverAll()
     //fillNext(0)
-    elemBring(fillObjs[currentFill])
+    elemBring(fillObjs[currentFill], bringPreserve, false)
     elemExplain(fillObjs[currentFill], false)
     currentFill = (currentFill + 1) % fillObjs.length
     var info = elemInfo(fillObjs[currentFill])
@@ -713,9 +727,11 @@ function listWords(excludeLess=true){
 	    headDiv.append(" ")
 	    oHead.onmousedown = () => {
 		[...demo.getElementsByClassName("word-filler-current")].forEach(e=>e.className="word-filler")
-		elemBring(o, 80)
+		elemBring(o, 80, false)
 	//	elemBringMinor(o, 10)
-		elemInfo(o).audio.play()
+		wordInfo = elemInfo(o)
+		wordInfo.audio.play()
+		word2board(wordInfo.voc)
 		var cNew = fillObjs.findIndex(e=>e==o)
 		if (cNew && cNew >= 0){
 		    currentFill = cNew
