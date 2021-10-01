@@ -34,7 +34,10 @@ Milkyway-cloze is a web application for vocabulary learning, which
 **  Click CLOZE to launch the spelling practice.
 
 *** Control keys for the cloze:
--  *,-Comma* / *.-Dot*: previous / next blank
+
+    Convenient shortkeys in the cloze process:
+
+- *,-Comma* / *.-Dot*: previous / next blank
 - *SPACE* (or *BACKSPACE*): clear the current blank
 - *4*: toggle marks of the current blank 
 - *5*: complete the current blank 
@@ -60,9 +63,12 @@ Milkyway-cloze is a web application for vocabulary learning, which
 
 ** rules.js
 
-   The transformation rules of English postfixes are stored as a javascript /Array<String>/.
+   
+- The transformation rules of English postfixes are stored in *_rules: Array<String>_*.
 
-   Custom clauses can be inserted in order to capture more word variations following the examples bellow: 
+- Each clause represents both an invert-transforming rule and a filter rule. 
+
+- Custom clauses can be inserted in order to capture more word variations following the examples bellow: 
    
 *** Rule String: -s
     meets -> meet
@@ -80,10 +86,10 @@ Milkyway-cloze is a web application for vocabulary learning, which
 - %1 = A vowel letter
 - %2 = A consonant letter
 - %s = Same letter as previous deleted
-- $ =  Restore the letter on the stack top
+- $ =  Restore one letter from the stack top
   
 * About
-  Please check the project at [[https://github.com/fulgenssequar/milkyway/][Github]] or [[https://fulgenssequar.github.io/pgp/?contact=gh-rdm][contact]] the [[https://keys.openpgp.org/vks/v1/by-fingerprint/2C7E1AD9F8C692D887C07F176819D81B0971C2C4][author]] for more information.
+  Please check the project at [[https://github.com/qtheperfect/milkyway/][Github]] or [[https://qtheperfect.github.io/pgp/?contact=gh-rdm][contact]] the [[https://keys.openpgp.org/vks/v1/by-fingerprint/2C7E1AD9F8C692D887C07F176819D81B0971C2C4][author]] for more information.
   
 
 

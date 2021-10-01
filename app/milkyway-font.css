@@ -64,6 +64,7 @@
     margin-right:0.05in;
     font-family:monospace;
     position:relative;
+    white-space:nowrap;
 }
 
 .word-filler-current {
@@ -71,6 +72,7 @@
     font-family:monospace;
     // margin-right:6%;
     position:relative;
+    white-space:nowrap;
 }
 
 .word-filler-done {
@@ -81,6 +83,7 @@
     font-family:monospace;
     animation:blinkingText 0.4s 1;
     position:relative;
+    white-space:nowrap;
 }
 
 .word-filler-dup{
@@ -114,30 +117,15 @@
 
 .current-noter-container{
     position:absolute;
-    bottom:-0.5ex;
-    width:0px;
-    overflow-x: visible;
+    bottom:-4px;
+    left:-4px;
+    right: -6px;
+    height: 2.8ex;
+    text-align:justify;
+    text-decoration: underline;
+    animation:slidingTextRight 0.4s 1;
+    border: #88332EDD solid 3px;
 }
-.current-noter-left{
-    color: #FF0000BB;
-    font-size: 120%;
-    font-weight:bold;
-    /*text-shadow: 1px 1px black, -1px -1px black, 1px -1px black, -1px 1px black;*/
-    animation:slidingTextLeft 0.1s 1;
-    position:relative;
-    left:-1ch;
-}
-
-.current-noter-right{
-    color: #FF0000BB;
-    font-size: 120%;
-    font-weight:bold;
-    /*text-shadow: 1px 1px black, -1px -1px black, 1px -1px black, -1px 1px black;*/
-    animation:slidingTextRight 0.2s 1;
-    position:relative;
-    right:5ch;
-}
-
 
 @keyframes blinkingText{
     0%{     color: #cF8;    }
@@ -151,6 +139,12 @@
 }
 
 @keyframes slidingTextRight{
-    from{ right:10ch; }
-    to{ right:5ch; }
+    from{ right:100%;
+	  background-color:#44908090;
+//	  border-top:0px;
+	  border-right:0px;}
+    to{ right:-6px;
+//	border-top:0px;
+        background-color:#99664030;
+	border-right:0px}
 }

@@ -424,6 +424,7 @@ function elemExplain(elem, cover=true, head=excise_cheat1, tail=excise_cheat2){
 	var explainHead = tailCover(voc, head, tail)
     else {
 	var explainHead = voc + " &#8594 " + inText
+	info.audio.currentTime = 0
 	info.audio.play()
 	word2board(voc)
     }
@@ -440,33 +441,17 @@ function elemReveal(elem){
 }
 
 
-var elemNoter1c = document.createElement("span")
-var elemNoter2c = document.createElement("span")
-elemNoter1c.className = "current-noter-container"
-elemNoter2c.className = "current-noter-container"
-
-var elemNoter1 = document.createElement("span")
-var elemNoter2 = document.createElement("span")
-elemNoter1.className = "current-noter-left"
-elemNoter2.className = "current-noter-right"
-
-elemNoter1c.appendChild(elemNoter1)
-elemNoter2c.appendChild(elemNoter2)
-
-elemNoter1.innerHTML="\u2770______"
-elemNoter2.innerHTML="_____\u2771"
-
+var elemNoter = document.createElement("span")
+elemNoter.className = "current-noter-container"
 
 var bringPreserve = demo.parentNode.getClientRects()[0].height/3
 function elemBring(o, reserve=bringPreserve, fill = true){
     var t = o.offsetTop - o.parentNode.offsetTop;
     demo.parentNode.scrollTop = t-reserve
-//    o.className="word-filler-current"
     if (fill)
 	o.className="word-filler-current"
     else {
-	o.prepend(elemNoter1c)
-	o.appendChild(elemNoter2c)
+	o.prepend(elemNoter)
     }
 }
 
@@ -552,29 +537,35 @@ function startFill(){
 document.getElementById("excise-clicker").onclick=startFill
 
 var readState = []
-function startRead(){
+function startRead(i = currentFill){
     var rate = document.getElementById("read-speed").value / 100.0
     // state_in_excise=true;
     if (readState.length == 0){
 	([ ...demo.getElementsByClassName("word-filler-current") ]).forEach((e)=>{e.className="word-filler"});
 	fillObjs=[ ...demo.getElementsByClassName("word-filler") ] 
     }
-    var blankLast = fillObjs[currentFill]
-    fillObjs.forEach(e => e.className="word-filler")
+    if (! currentFill || currentFill < 0) currentFill = 0
+
+    let ti = i - currentFill 
+    if (ti  > 2 || ti < -2){
+	i = currentFill;
+    }
+    else {
+	i = i % fillObjs.length
+	currentFill = i
+    }
+    var blankLast = fillObjs[i]
+    var info = elemInfo(blankLast)
+//    fillObjs.forEach(e => e.className="word-filler")
     currentFill = fillObjs.findIndex(o => o == blankLast ) 
-    if (! currentFill || currentFill < 0)
-	currentFill = 0
-    //coverAll()
-    //fillNext(0)
-    elemBring(fillObjs[currentFill], bringPreserve, false)
-    elemExplain(fillObjs[currentFill], false)
-    currentFill = (currentFill + 1) % fillObjs.length
-    var info = elemInfo(fillObjs[currentFill])
+
+    elemBring(blankLast, bringPreserve, false)
+    elemExplain(blankLast, false)
     readState.pop()
-    readState.push(setTimeout(() => startRead(), (info.audio.duration * (1 + rate) ) * 1000))
+    readState.push(setTimeout(() => startRead(i + 1), (info.audio.duration * (1 + rate) ) * 1000))
 }
 
-document.getElementById("start-reader").onclick = startRead
+document.getElementById("start-reader").onclick = e => startRead(currentFill)
 
 function fillNext(pace=1){
     var elem0  = fillObjs[currentFill]

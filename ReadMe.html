@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-09-27 Mon 18:38 -->
+<!-- 2021-09-30 Thu 09:46 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Milkyway-Cloze: Deep Congnitive Vocabulary Learning</title>
@@ -241,8 +241,8 @@ for the JavaScript code in this tag.
 </ul>
 <hr />
 
-<div id="outline-container-org0d3a011" class="outline-2">
-<h2 id="org0d3a011"><span class="section-number-2">1</span> Overview</h2>
+<div id="outline-container-org4a9fb06" class="outline-2">
+<h2 id="org4a9fb06"><span class="section-number-2">1</span> Overview</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Milkyway-cloze is a web application for vocabulary learning, which 
@@ -272,25 +272,29 @@ Milkyway-cloze is a web application for vocabulary learning, which
 </div>
 </div>
 
-<div id="outline-container-orgd85af66" class="outline-2">
-<h2 id="orgd85af66"><span class="section-number-2">2</span> Start Up:</h2>
+<div id="outline-container-org9e7675b" class="outline-2">
+<h2 id="org9e7675b"><span class="section-number-2">2</span> Start Up:</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org5f91c38" class="outline-3">
-<h3 id="org5f91c38"><span class="section-number-3">2.1</span> Select a level to choose the vocabulary for learning.</h3>
+<div id="outline-container-org4983af2" class="outline-3">
+<h3 id="org4983af2"><span class="section-number-3">2.1</span> Select a level to choose the vocabulary for learning.</h3>
 </div>
 
-<div id="outline-container-org3bf5686" class="outline-3">
-<h3 id="org3bf5686"><span class="section-number-3">2.2</span> PASTE the article and click START.</h3>
+<div id="outline-container-orgd1d2fc6" class="outline-3">
+<h3 id="orgd1d2fc6"><span class="section-number-3">2.2</span> PASTE the article and click START.</h3>
 </div>
 
-<div id="outline-container-orge58511e" class="outline-3">
-<h3 id="orge58511e"><span class="section-number-3">2.3</span> Click CLOZE to launch the spelling practice.</h3>
+<div id="outline-container-orgc35e9ad" class="outline-3">
+<h3 id="orgc35e9ad"><span class="section-number-3">2.3</span> Click CLOZE to launch the spelling practice.</h3>
 <div class="outline-text-3" id="text-2-3">
 </div>
-<div id="outline-container-org8e70cf9" class="outline-4">
-<h4 id="org8e70cf9"><span class="section-number-4">2.3.1</span> Control keys for the cloze:</h4>
+<div id="outline-container-org25e57fb" class="outline-4">
+<h4 id="org25e57fb"><span class="section-number-4">2.3.1</span> Control keys for the cloze:</h4>
 <div class="outline-text-4" id="text-2-3-1">
+<p>
+Convenient shortkeys in the cloze process:
+</p>
+
 <ul class="org-ul">
 <li><b>,-Comma</b> / <b>.-Dot</b>: previous / next blank</li>
 <li><b>SPACE</b> (or <b>BACKSPACE</b>): clear the current blank</li>
@@ -305,8 +309,8 @@ Milkyway-cloze is a web application for vocabulary learning, which
 </div>
 </div>
 
-<div id="outline-container-orgc921a23" class="outline-3">
-<h3 id="orgc921a23"><span class="section-number-3">2.4</span> Click START-READING to listen to the vocabulary.</h3>
+<div id="outline-container-org1991934" class="outline-3">
+<h3 id="org1991934"><span class="section-number-3">2.4</span> Click START-READING to listen to the vocabulary.</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 The speed (intervals between words) is adjustable.
@@ -314,8 +318,8 @@ The speed (intervals between words) is adjustable.
 </div>
 </div>
 
-<div id="outline-container-org590370d" class="outline-3">
-<h3 id="org590370d"><span class="section-number-3">2.5</span> EXPORT or LOAD the study record.</h3>
+<div id="outline-container-orgc8a1f29" class="outline-3">
+<h3 id="orgc8a1f29"><span class="section-number-3">2.5</span> EXPORT or LOAD the study record.</h3>
 <div class="outline-text-3" id="text-2-5">
 <ul class="org-ul">
 <li>The last line of the text is used to generate the file name.</li>
@@ -325,8 +329,8 @@ The speed (intervals between words) is adjustable.
 </div>
 </div>
 
-<div id="outline-container-org82ff721" class="outline-3">
-<h3 id="org82ff721"><span class="section-number-3">2.6</span> IMPORT-LISTS: Load multiple record files to exclude the redundant words</h3>
+<div id="outline-container-org8190a4e" class="outline-3">
+<h3 id="org8190a4e"><span class="section-number-3">2.6</span> IMPORT-LISTS: Load multiple record files to exclude the redundant words</h3>
 <div class="outline-text-3" id="text-2-6">
 <p>
 The words marked as blue in imported files will be automatically marked blue in the present article.
@@ -336,24 +340,24 @@ The words marked as blue in imported files will be automatically marked blue in 
 </div>
 
 
-<div id="outline-container-orge705bbe" class="outline-2">
-<h2 id="orge705bbe"><span class="section-number-2">3</span> Code Explanation</h2>
+<div id="outline-container-orge34075d" class="outline-2">
+<h2 id="orge34075d"><span class="section-number-2">3</span> Code Explanation</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-orgc510156" class="outline-3">
-<h3 id="orgc510156"><span class="section-number-3">3.1</span> rules.js</h3>
+<div id="outline-container-orgd5b1a5f" class="outline-3">
+<h3 id="orgd5b1a5f"><span class="section-number-3">3.1</span> rules.js</h3>
 <div class="outline-text-3" id="text-3-1">
-<p>
-The transformation rules of English postfixes are stored as a javascript <i>Array&lt;String&gt;</i>.
-</p>
+<ul class="org-ul">
+<li>The transformation rules of English postfixes are stored in <b><span class="underline">rules: Array&lt;String&gt;</span></b>.</li>
 
-<p>
-Custom clauses can be inserted in order to capture more word variations following the examples bellow: 
-</p>
+<li>Each clause represents both an invert-transforming rule and a filter rule.</li>
+
+<li>Custom clauses can be inserted in order to capture more word variations following the examples bellow:</li>
+</ul>
 </div>
 
-<div id="outline-container-orga6fcc84" class="outline-4">
-<h4 id="orga6fcc84"><span class="section-number-4">3.1.1</span> Rule String: -s</h4>
+<div id="outline-container-org855b69f" class="outline-4">
+<h4 id="org855b69f"><span class="section-number-4">3.1.1</span> Rule String: -s</h4>
 <div class="outline-text-4" id="text-3-1-1">
 <p>
 meets -&gt; meet
@@ -361,8 +365,8 @@ meets -&gt; meet
 </div>
 </div>
 
-<div id="outline-container-org0a39dd0" class="outline-4">
-<h4 id="org0a39dd0"><span class="section-number-4">3.1.2</span> Rule String: -g-n-i+e</h4>
+<div id="outline-container-org03b77fd" class="outline-4">
+<h4 id="org03b77fd"><span class="section-number-4">3.1.2</span> Rule String: -g-n-i+e</h4>
 <div class="outline-text-4" id="text-3-1-2">
 <p>
 voting -&gt; vote
@@ -370,8 +374,8 @@ voting -&gt; vote
 </div>
 </div>
 
-<div id="outline-container-org293e2b7" class="outline-4">
-<h4 id="org293e2b7"><span class="section-number-4">3.1.3</span> Rule String: -s-e-i+y</h4>
+<div id="outline-container-org116bae2" class="outline-4">
+<h4 id="org116bae2"><span class="section-number-4">3.1.3</span> Rule String: -s-e-i+y</h4>
 <div class="outline-text-4" id="text-3-1-3">
 <p>
 treaties -&gt; treaty
@@ -379,8 +383,8 @@ treaties -&gt; treaty
 </div>
 </div>
 
-<div id="outline-container-orgd779d54" class="outline-4">
-<h4 id="orgd779d54"><span class="section-number-4">3.1.4</span> Rule String: -g-n-i-%2-%s-%1$$</h4>
+<div id="outline-container-orgc6a1c7a" class="outline-4">
+<h4 id="orgc6a1c7a"><span class="section-number-4">3.1.4</span> Rule String: -g-n-i-%2-%s-%1$$</h4>
 <div class="outline-text-4" id="text-3-1-4">
 <p>
 sitting -&gt; sit
@@ -393,26 +397,24 @@ sitting -&gt; sit
 <li>%1 = A vowel letter</li>
 <li>%2 = A consonant letter</li>
 <li>%s = Same letter as previous deleted</li>
-<li>$ =  Restore the letter on the stack top</li>
+<li>$ =  Restore one letter from the stack top</li>
 </ul>
 </div>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgce496cd" class="outline-2">
-<h2 id="orgce496cd"><span class="section-number-2">4</span> About</h2>
+<div id="outline-container-org9e018f6" class="outline-2">
+<h2 id="org9e018f6"><span class="section-number-2">4</span> About</h2>
 <div class="outline-text-2" id="text-4">
 <p>
-Please check the project at <a href="https://github.com/fulgenssequar/milkyway/">Github</a> or <a href="https://fulgenssequar.github.io/pgp/?contact=gh-rdm">contact</a> the <a href="https://keys.openpgp.org/vks/v1/by-fingerprint/2C7E1AD9F8C692D887C07F176819D81B0971C2C4">author</a> for more information.
+Please check the project at <a href="https://github.com/qtheperfect/milkyway/">Github</a> or <a href="https://qtheperfect.github.io/pgp/?contact=gh-rdm">contact</a> the <a href="https://keys.openpgp.org/vks/v1/by-fingerprint/2C7E1AD9F8C692D887C07F176819D81B0971C2C4">author</a> for more information.
 </p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: me</p>
-<p class="date">Created: 2021-09-27 Mon 18:38</p>
-<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+未庄完人 编
 </div>
 </body>
 </html>
