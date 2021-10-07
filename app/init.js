@@ -55,7 +55,6 @@ if (cookable.length>5) {
     window.cookout=f=>f(cookable)
 }
 
-    
 function changeTheme(themeNum  = -1){
     var themeList = [
 	{noter:"Switch To DARK Theme", href:"app/milkyway-light.css"},
@@ -64,14 +63,19 @@ function changeTheme(themeNum  = -1){
     var css = document.getElementById("overall-style")
     var styleButton = document.getElementById("overall-restyle")
     var currentThemeIndex = styleButton.attributes["currentThemeIndex"]
-    currentThemeIndex = currentThemeIndex ? (currentThemeIndex.value) : 1
-    if (themeNum >= 0){
-	currentThemeIndex = themeNum 
-    }
-    var c0 = currentThemeIndex % themeList.length
-    var c1 = (c0 + 1) % themeList.length
+    currentThemeIndex = currentThemeIndex ? parseFloat(currentThemeIndex.value) : 1
+
+    var tmNew = ( themeNum >= 0 ? themeNum : (currentThemeIndex + 1) ) % themeList.length
     
-    styleButton.value = themeList[c0].noter
-    css.href = themeList[c0].href
-    styleButton.setAttribute("currentThemeIndex", c1)
+    if (! themeList[tmNew]) {
+	console.log(`Error in theme change to ${tmNew}`)
+	return
+    }
+    else
+	console.log(`Theme switched to ${tmNew} replacing ${currentThemeIndex}`)
+    
+    styleButton.value = themeList[tmNew].noter
+    styleButton.onclick = e => changeTheme(-1)
+    css.href = themeList[tmNew].href
+    styleButton.setAttribute("currentThemeIndex", tmNew)
 }

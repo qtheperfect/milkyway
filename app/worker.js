@@ -1,5 +1,9 @@
 var demo = document.getElementById("demo")
-demo.oncontextmenu=(e)=>e.preventDefault() 
+// demo.oncontextmenu=(e)=>e.preventDefault() 
+function gotobottom(){
+    var demo = document.getElementById("demo")
+    demo.scrollIntoView()
+}
 
 var allFiller=new Object();
 var fillObjs=new Array();
@@ -14,7 +18,7 @@ var remove_dup=true
 var url1 = window.location.origin + window.location.pathname
 var urlData="data://application/json;charset=utf-8,"
 
-function getDataString(a, l, u=urlData){
+function getDataString(a, l, u = urlData){
     var eea = encodeURIComponent(encodeURIComponent(getDate()+"\n"+a))
     var eel = encodeURIComponent(encodeURIComponent(JSON.stringify(l)))
     u += "?article="+eea+"&redundant="+eel+"&theme="+window.currentThemeIndex
@@ -64,7 +68,6 @@ function loadString(search){
 
 window.cookout((s)=>{
     loadString(s).submiter();
-    window.scroll(0, demo.parentNode.offsetTop-30)
 })
 	       
 var urlLoader=loadString(window.location.search)
@@ -334,7 +337,7 @@ function sendText(do_jump=true, removeDup=remove_dup){
     var s = document.getElementById("maininput").value
     s=s.replace(/([a-zA-Z]+)+-\n([a-zA-Z]+)/g, "$1$2\n")
     if (do_jump){
-	window.scroll(0, demo.parentNode.offsetTop-30)
+	demo.scrollIntoView()
 	demo.style.backgroundImage="url(\"" + baseServer + "/text-faces/?article="+encodeURIComponent(s)+"&redundantList="+encodeURIComponent(encodeURIComponent(JSON.stringify(redundantList)))+"__large.png\")"
 	refreshChangeable()
     }
@@ -363,6 +366,8 @@ function sendText(do_jump=true, removeDup=remove_dup){
     for (var o of document.getElementsByClassName("word-filler-dup")){
 	o.onmousedown = function (){elemExplain(this, false)}
     }
+
+    excludeRedundant()
     listWords(false)
 }
 
@@ -556,12 +561,12 @@ function startRead(i = currentFill){
     }
     var blankLast = fillObjs[i]
     var info = elemInfo(blankLast)
-//    fillObjs.forEach(e => e.className="word-filler")
-    currentFill = fillObjs.findIndex(o => o == blankLast ) 
+    fillObjs.forEach(e => e.className="word-filler")
+    // currentFill = fillObjs.findIndex(o => o == blankLast ) 
 
     elemBring(blankLast, bringPreserve, false)
     elemExplain(blankLast, false)
-    readState.pop()
+    readState.unshift()
     readState.push(setTimeout(() => startRead(i + 1), (info.audio.duration * (1 + rate) ) * 1000))
 }
 
@@ -686,6 +691,7 @@ function listWords(excludeLess=true){
     var words1=[ ...demo.getElementsByClassName("word-filler")]
     var words2=[ ...demo.getElementsByClassName("word-filler-done")]
 
+    
     if (excludeLess){
 	state_in_excise = false
 	refreshRedundant()

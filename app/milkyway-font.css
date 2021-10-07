@@ -1,6 +1,17 @@
 
 * {box-sizing: border-box;}
-   
+
+table, th{
+  border-left: 1px dashed;
+  border-top: 1px dashed;
+  border-bottom: 1px dashed;
+  text-align:center;
+}
+td {
+  border-left: 1px dashed;
+  border-bottom: 1px dashed;
+  text-align:center;
+}
 /* ===================================================================== */
 
 .body{
@@ -45,7 +56,7 @@
 
 .colorful-button{
     margin:0px;
-    border:0px;
+    border:2px solid;
     padding:5px;
     border-radius:8px;
     //float:left;
@@ -115,36 +126,3 @@
 .red-zone{
 }
 
-.current-noter-container{
-    position:absolute;
-    bottom:-4px;
-    left:-4px;
-    right: -6px;
-    height: 2.8ex;
-    text-align:justify;
-    text-decoration: underline;
-    animation:slidingTextRight 0.4s 1;
-    border: #88332EDD solid 3px;
-}
-
-@keyframes blinkingText{
-    0%{     color: #cF8;    }
-    30%{    color: #F29; }
-    60%{   color: #33F;    }
-}
-
-@keyframes slidingTextLeft{
-    from{ left:-1em; }
-    to{ left:-1ch; }
-}
-
-@keyframes slidingTextRight{
-    from{ right:100%;
-	  background-color:#44908090;
-//	  border-top:0px;
-	  border-right:0px;}
-    to{ right:-6px;
-//	border-top:0px;
-        background-color:#99664030;
-	border-right:0px}
-}

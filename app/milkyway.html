@@ -16,23 +16,35 @@
     </head>
     <body class="body"> 
 	<center><h1>Milkyway -  A Cloze Practice Website</h1></center>
-	<center><input type="button" class="dark-button" id="overall-restyle" class="colorful-button" value="[　　　　Switch To DARK Theme　　　　 ]"/ onclick="changeTheme()">
-	<p> </p>
-	</center>
-	<center>Your English level:
-	    <select id="nonsense-voting" class="colorful-button">
-		<option value="dictList"  >cet-4</option>
-		<option value="dict9k" selected="selected">cet-6</option>
-		<option value="dictList_mw" >tofel</option>
-		<option value="dictList_mw" >ielts</option>
-		<option value="dictList_mw" >barrister</option>
-	    </select>
-	    Paste Text Or 
-	    <input type="button" class="dark-button" value="Clear Input" id="clear-clicker"  onkeydown="document.body.onkeydown" /> 
-	    <span style="float:right">
-	      Need 
-	      <a href="ReadMe.html" class="dark-button"> Help </a> ?
-	    </span>
+	<center>
+
+	  <table class="colorful-button">
+	    <tr>
+	      <th>Switch Themes</th>
+	      <th>Text Input </th>
+	      <th> English level </th>
+	      <th>Start Practice</th>
+	      <th>Help</th>
+	    </tr>
+	    <tr>
+	      <td>
+		<input type="button" class="dark-button" id="overall-restyle" class="colorful-button" value="Switch To DARK Theme" onclick="changeTheme()" currentThemeIndex="0" >
+	      </td> <td>
+		<input type="button" class="dark-button" value="Clear" id="clear-clicker"  onkeydown="document.body.onkeydown" /> 
+	      </td> <td>
+	  
+		<select id="nonsense-voting" class="dark-button">
+		  <option value="dictList"  >cet-4</option>
+		  <option value="dict9k" selected="selected">cet-6</option>
+		  <option value="dictList_mw" >tofel</option>
+		  <option value="dictList_mw" >ielts</option>
+		  <option value="dictList_mw" >barrister</option>
+		</select>
+	      </td> 
+	      <td> <input type="button" class="colorful-button" id="go-down" value="Go To The Text >>" onclick="gotobottom()"> </td>
+	      <td> <a href="ReadMe.html" class="dark-button"> ReadMe </a>  </td>
+	    </tr>
+	  </table>
 	</center>
 	<textarea id="maininput">
 
@@ -44,7 +56,7 @@ There were a king with a large jaw and a queen with a plain face, on the throne 
 
 It was the year of Our Lord one thousand seven hundred and seventy-five. Spiritual revelations were conceded to England at that favoured period, as at this. Mrs. Southcott had recently attained her five-and-twentieth blessed birthday, of whom a prophetic private in the Life Guards had heralded the sublime appearance by announcing that arrangements were made for the swallowing up of London and Westminster. Even the Cock-lane ghost had been laid only a round dozen of years, after rapping out its messages, as the spirits of this very year last past (supernaturally deficient in originality) rapped out theirs. Mere messages in the earthly order of events had lately come to the English Crown and People, from a congress of British subjects in America:4 which, strange to relate, have proved more important to the human race than any communications yet received through any of the chickens of the Cock-lane brood. 
 
-Dickens_TaleOfTwoCities          ---- [The beginning of the last line implicates the title of the article]
+Dickens_TaleOfTwoCities           -----  ⟸ [The beginning of the final line indicates the title of the article!]
 
 
 	</textarea>

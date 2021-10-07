@@ -1,9 +1,11 @@
+# (setq org-html-postamble " © qtheperfect 未庄完人 编 ")
 #+TITLE: Milkyway-Cloze: Deep Congnitive Vocabulary Learning 
 #+OPTIONS: toc:nil
 
 ---------
 - *Quick and Efficient ONLINE English Vocabulary Memory Tool*
-- *利用语境迅速深度记忆英语词汇的神奇工具*
+- *利用英文语境迅速建立词汇深度理解记忆的神奇工具*
+- *乘英文語境之便令閣下熟習辭彙且通達理解之神妙利器*
 - *コンテキストを使用した迅速かつ効率的なオンライン英語語彙記憶魔法ツール*
 - *컨텍스트를 사용하는 빠르고 효율적인 온라인 영어 어휘 메모리 마법 도구*
 - *Быстрый и эффективный онлайн-инструмент для запоминания английского словаря с помощью контекста*
@@ -13,9 +15,9 @@
 * Overview
 Milkyway-cloze is a web application for vocabulary learning, which 
 
-+ *Generates vocabularies ONLINE using any article as context.*
++ *Extracts the recommended vocabulary _ONLINE_ from any articles provided;*
 
-+ *And helps to develop deep and cognitive vocabulary memory by CLOZE practice.*
++ *And develops deep cognitive vocabulary memory by generating a _CLOZE_ practice right within the context.*
 
 #+ATTR_HTML: :width 80%
 [[./inplug/pic1.png]]
@@ -23,28 +25,28 @@ Milkyway-cloze is a web application for vocabulary learning, which
 #+ATTR_HTML: :width 80% 
 [[./inplug/pic2.png]]
 
-[[https://fulgenssequar.github.io/mw/?rdme][Try Now]]
+[[https://qtheperfect.github.io/mw/?trynow-rdme][Try Now]]
 
 * Start Up:
 
-** Select a level to choose the vocabulary for learning.
+** Select a LEVEL with the proper the vocabulary coverage for learning.
  
 ** PASTE the article and click START.
    
-**  Click CLOZE to launch the spelling practice.
+** Click CLOZE to launch the spelling practice.
 
 *** Control keys for the cloze:
 
-    Convenient shortkeys in the cloze process:
+    Convenient shortkeys during the cloze process:
 
-- *,-Comma* / *.-Dot*: previous / next blank
-- *SPACE* (or *BACKSPACE*): clear the current blank
-- *4*: toggle marks of the current blank 
-- *5*: complete the current blank 
-- *1*: show partial answer of the current blank
-- *;-SEMICOLON* (or *ENTER*): show full answer of the current blank 
-- *9*: the 5th previous blank
-- *0*: the 5th next  blank
+| *,-Comma* / *.-Dot*        | previous / next blank                    |
+| *SPACE* (or *BACKSPACE*)   | clear the current blank                  |
+| *4*                        | toggle marks of the current blank        |
+| *5*                        | complete the current blank               |
+| *1*                        | show partial answer of the current blank |
+| *;-SEMICOLON* (or *ENTER*) | show full answer of the current blank    |
+| *9*                        | the 5th of the previous blanks           |
+| *0*                        | the 5th of the proceeding blanks         |
 
 **  Click START-READING to listen to the vocabulary. 
    The speed (intervals between words) is adjustable.
@@ -70,26 +72,22 @@ Milkyway-cloze is a web application for vocabulary learning, which
 
 - Custom clauses can be inserted in order to capture more word variations following the examples bellow: 
    
-*** Rule String: -s
-    meets -> meet
-    
-*** Rule String: -g-n-i+e
-    voting -> vote
-
-*** Rule String: -s-e-i+y
-    treaties -> treaty
-    
-*** Rule String: -g-n-i-%2-%s-%1$$
-   sitting -> sit
+| Rule Example      | Effect Example         |
+|-------------------+------------------------|
+| -s                | meets -> meet          |
+| -g-n-i+e          | voting -> vote         |
+| -s-e-i+y          | treaties -> treaty     |
+| -g-n-i-%2-%s-%1$$ | sitting -> sit     *** |
    
-   /Explain:/
-- %1 = A vowel letter
-- %2 = A consonant letter
-- %s = Same letter as previous deleted
-- $ =  Restore one letter from the stack top
+   *** /Explain:/
+- %2 = A consonant letter (the second /t/ in /sitting/)
+- %s = One same letter as previous deleted (the first /t/ in /sitting/)
+- %1 = A vowel letter (the first /i/ in /sitting/)
+- $ =  Restore one letter from the stack top (the /i/ and /t/ are restored)
   
 * About
-  Please check the project at [[https://github.com/qtheperfect/milkyway/][Github]] or [[https://qtheperfect.github.io/pgp/?contact=gh-rdm][contact]] the [[https://keys.openpgp.org/vks/v1/by-fingerprint/2C7E1AD9F8C692D887C07F176819D81B0971C2C4][author]] for more information.
+-  [[./LICENSE][LICTENSE: AGPL]] 
+-  Please check the project at [[https://github.com/qtheperfect/milkyway/][Github]] or [[https://qtheperfect.github.io/pgp/?contact=gh-rdm][contact]] the [[https://keys.openpgp.org/vks/v1/by-fingerprint/2C7E1AD9F8C692D887C07F176819D81B0971C2C4][author]] for more information.
   
 
 
