@@ -340,6 +340,7 @@ function sendText(do_jump=true, removeDup=remove_dup){
 	demo.scrollIntoView()
 	demo.style.backgroundImage="url(\"" + baseServer + "/text-faces/?article="+encodeURIComponent(s)+"&redundantList="+encodeURIComponent(encodeURIComponent(JSON.stringify(redundantList)))+"__large.png\")"
 	refreshChangeable()
+    state_in_excise = false
     }
     var words = allWords(s)
     var wordsValid=ruleAllWords(words, ruleArray, getSimpleFilter())
