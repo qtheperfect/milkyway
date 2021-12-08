@@ -341,6 +341,7 @@ function sendText(do_jump=true, removeDup=remove_dup){
 	demo.style.backgroundImage="url(\"" + baseServer + "/text-faces/?article="+encodeURIComponent(s)+"&redundantList="+encodeURIComponent(encodeURIComponent(JSON.stringify(redundantList)))+"__large.png\")"
 	refreshChangeable()
     }
+    state_in_excise=false
     var words = allWords(s)
     var wordsValid=ruleAllWords(words, ruleArray, getSimpleFilter())
     allFiller = fillAllLabeled(s, wordsValid)
@@ -817,7 +818,13 @@ function refineList(){
 
 function dictInUse(){
     var inuse = document.getElementById("nonsense-voting").value
-    return window[inuse]
+    if (typeof(window[inuse]) != "undefined")
+	return window[inuse]
+    else {
+	res = inuse.split("+").reduce((d1, d2key) => ({...window[d2key], ...d1}), first={})
+	window[inuse] = res
+	return res
+    }
 }
 
 function getRevealer(){

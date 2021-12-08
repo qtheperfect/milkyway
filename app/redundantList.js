@@ -1,1 +1,1 @@
-var redundantList=["evil"]
+var redundantList=["evil", "avoid", "article"]

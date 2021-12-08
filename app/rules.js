@@ -4,7 +4,7 @@ var ruleArray=[
     "-g-n-i+e",
     "-g-n-i-%2-%s-%1$$;",
     "-g-n-i-y+i+e;",
-    "-s-g-n-i-%2$+e", //lodging -> lodge
+    "-s-g-n-i-%2$+e", //lodgings -> lodge
     "-s-g-n-i", //meanderings -> meander
 
     "-d-e$",
@@ -45,12 +45,16 @@ var ruleArray=[
     "-c-i-%2$",//prophetic -> prophet
     "-n-o-i-%2$", // invention -> invent
     "-n-o-i-%2-a-%2$+e", // limitation -> limite
+    "-n-o-i-t-i-%2$+e",// competition -> compete
 
     "-l-a-c$", // historical->historic
     "-l-a-c$+e",// practical->practice
     "-y-t-i-%2$", // originality->original
     "-e-v-i-t-----$$$$$$", // subjective -> subject
     "-e-v-i-t$+e-----$$$$$",  // generative -> generate
-    "-e-v-i-t-i-%2%+e" // competitive -> competite 
+    "-e-v-i-t-i-%2%+e", // competitive -> compete
+    "-s-s-e-n----$$$$", // plainness -> plain
+    "-t-n-e-m" // government -> govern
 ]
+
 
