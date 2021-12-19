@@ -484,3 +484,4 @@ deps/deps.jl
 ## /rsyncWhat
 /rsyncThis
 /.rsyncRemote
+.draft

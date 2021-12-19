@@ -26,10 +26,15 @@ function getDataString(a, l, u = urlData){
 }
 
 function loadString(search){
-    var article=search.match(/article=([^&]+)/)
-    var lastExclude=search.match(/redundant=([^&]+)/)
-    var theme=search.match(/theme=([^&]+)/)
-    var res={}
+    let article=search.match(/article=([^&]+)/)
+    let lastExclude=search.match(/redundant=([^&]+)/)
+    let theme=search.match(/theme=([^&]+)/)
+    let jsonAddr = search.match(/jsonAddr=([^&]+)/)
+    
+    var res={ }
+    if (jsonAddr){
+	res.jsonAddr = decodeURIComponent(jsonAddr[1])
+    }
     if (article){
 	article=article[1]
 	res.article=decodeURIComponent(article)
@@ -45,6 +50,10 @@ function loadString(search){
     if (theme)
 	res.theme = theme[1] 
     res.submiter = function(switcharticle = true){
+	if (res.jsonAddr){
+	    fetch( res.jsonAddr ).then(r => r.text()).then(t => loadJson(t).submiter())
+	    return;
+	}
 	if (res.article && switcharticle){
 	    window.article = res.article
 	    document.getElementById("maininput").value=res.article
@@ -65,6 +74,47 @@ function loadString(search){
     }
     return res
 }
+
+function loadJson(jsonStr){
+    var  res  = JSON.parse(jsonStr)
+    res.submiter = function(switcharticle = true){
+	if (res.article && switcharticle){
+	    window.article = res.article
+	    document.getElementById("maininput").value=res.article
+	    sendText(false)
+	}
+	if (res.redundantList){
+	    window.lastExclude = res.redundantList
+	    window.redundantList = [ ... new Set([...window.redundantList, ...res.redundantList])]
+	    excludeRedundant()
+	}
+
+	// var h=document.getElementById("changeable-head")
+	// h.href=getDataString(res.article, res.redundantList)
+	// h.download="mw_"+getDate()+".txt"
+	listWords(false)
+	if (res.theme)
+	    changeTheme(res.theme)
+	if (res.dict){
+	    document.getElementById("nonsense-voting").value = res.dict;
+	}   
+    }
+    return res
+}
+
+function saveJson( affectSaver = true ) {
+    var res = {};
+    res.article = getDate() + "\n" + document.getElementById("maininput").value
+    res.redundantList = window.redundantList
+    res.dict = document.getElementById("nonsense-voting").value
+    res.theme = window.currentThemeIndex
+    if (affectSaver) { 
+	affectHead = document.getElementById("changeable-head")
+	affectHead.href =  urlData + encodeURIComponent(JSON.stringify(res))
+	affectHead.download = "milkyway_" + getTitle() + "_" + getDate( ) + ".json"
+    }
+}
+
 
 window.cookout((s)=>{
     loadString(s).submiter();
@@ -116,15 +166,21 @@ function getDate(){
     return dateStr;
 }
 
+
+function getTitle( ) {
+    var   mainString = document.getElementById("maininput").value
+    var  l = mainString.replace(/^[\s\n]+|[\s\n]+$/g, '').split("\n")
+    if ( l.length <= 0 ) l = [ "Milky-Way welcomes you." ]
+    let  title = l[ l.length - 1 ].replace(/^[\s\n]+|[\s\n]+$/g, '').slice(0, 25).replace(/[\s\n]+$/g, '')
+    return title
+}
+
 function refreshChangeable(){
     var head = document.getElementById("changeable-head")
     var mainString = document.getElementById("maininput").value
-    var l = mainString.replace(/^[\s\n]+|[\s\n]+$/g, '').split("\n")
-    if (l.length <= 0) l = ["Milky-Way welcomes you."]
-    var title = l[l.length-1].replace(/^[\s\n]+|[\s\n]+$/g, '').slice(0, 25).replace(/[\s\n]+$/g, '')
-    //var dateStr = getDate() + "\n";
-    //var excludeStr = JSON.stringify(redundantList)
-    //reviewLocation = window.location.origin + window.location.pathname + "?article=" + encodeURIComponent( dateStr + mainString ) + "&redundant="+encodeURIComponent(excludeStr)
+
+    var title = getTitle( )
+
     var reviewLocation = getDataString(mainString, window.redundantList)
     head.href=reviewLocation
     head.download = "AXV_" + getDate() + "_" + title + ".milkyway"
