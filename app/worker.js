@@ -4,6 +4,7 @@ function gotobottom(){
     var demo = document.getElementById("demo")
     demo.scrollIntoView()
 }
+document.getElementById("go-down").onclick = e => gotobottom()
 
 var allFiller=new Object();
 var fillObjs=new Array();
@@ -30,10 +31,14 @@ function loadString(search){
     let lastExclude=search.match(/redundant=([^&]+)/)
     let theme=search.match(/theme=([^&]+)/)
     let jsonAddr = search.match(/jsonAddr=([^&]+)/)
+    let styleinfo = search.match(/styleinfo=([^&]+)/)
     
     var res={ }
     if (jsonAddr){
 	res.jsonAddr = decodeURIComponent(jsonAddr[1])
+    }
+    else if (styleinfo){
+	res.jsonStr = decodeURIComponent(styleinfo[1])
     }
     if (article){
 	article=article[1]
@@ -49,10 +54,13 @@ function loadString(search){
 	res.redundantList=[]
     if (theme)
 	res.theme = theme[1] 
-    res.submiter = function(switcharticle = true){
+    res.submitter = function(switcharticle = true){
 	if (res.jsonAddr){
-	    fetch( res.jsonAddr ).then(r => r.text()).then(t => loadJson(t).submiter())
+	    fetch( res.jsonAddr ).then(r => r.text()).then(t => loadJson(t).submitter())
 	    return;
+	}
+	else if (res.jsonStr){
+	    loadJson(decodeURIComponent(res.jsonStr)).submitter()
 	}
 	if (res.article && switcharticle){
 	    window.article = res.article
@@ -77,7 +85,10 @@ function loadString(search){
 
 function loadJson(jsonStr){
     var  res  = JSON.parse(jsonStr)
-    res.submiter = function(switcharticle = true){
+    res.submitter = function(switcharticle = true){
+	if (res.dict){
+	    document.getElementById("nonsense-voting").value = res.dict;
+	}
 	if (res.article && switcharticle){
 	    window.article = res.article
 	    document.getElementById("maininput").value=res.article
@@ -88,67 +99,62 @@ function loadJson(jsonStr){
 	    window.redundantList = [ ... new Set([...window.redundantList, ...res.redundantList])]
 	    excludeRedundant()
 	}
-
 	// var h=document.getElementById("changeable-head")
 	// h.href=getDataString(res.article, res.redundantList)
 	// h.download="mw_"+getDate()+".txt"
-	listWords(false)
 	if (res.theme)
 	    changeTheme(res.theme)
-	if (res.dict){
-	    document.getElementById("nonsense-voting").value = res.dict;
-	}   
+	   
+	listWords(false)
     }
     return res
 }
 
 function saveJson( affectSaver = true ) {
     var res = {};
+    res.dict = document.getElementById("nonsense-voting").value
     res.article = getDate() + "\n" + document.getElementById("maininput").value
     res.redundantList = window.redundantList
-    res.dict = document.getElementById("nonsense-voting").value
     res.theme = window.currentThemeIndex
+    resURI = encodeURIComponent(JSON.stringify(res))
     if (affectSaver) { 
 	affectHead = document.getElementById("changeable-head")
-	affectHead.href =  urlData + encodeURIComponent(JSON.stringify(res))
-	affectHead.download = "milkyway_" + getTitle() + "_" + getDate( ) + ".json"
+	affectHead.href =  urlData + resURI
+	affectHead.download = "AXV_" + getTitle() + "_" + getDate( ) + ".json"
     }
+    window.cookin(JSON.stringify(res))
+    return resURI
 }
 
 
 window.cookout((s)=>{
-    loadString(s).submiter();
+    if (s.startsWith("?")) loadString(s).submitter()
+    else loadJson(s).submitter();
 })
-	       
+
+
 var urlLoader=loadString(window.location.search)
 if (urlLoader.article || urlLoader.redundantList){
-    urlLoader.submiter()
+    urlLoader.submitter()
 }
 
-function fReader(fun, swa = true){
+function fReader(swa = true){
     var f = document.createElement("input")
     f.type="file"
     f.multiple="multiple";
     
-    f.onchange=()=> {
-	[...f.files].forEach(x=>{
-	    var r = new FileReader()
-	    var t=""
-	    r.onload=()=>{
-		t=r.result
-		fun(t, swa)
-	    }
-	    r.readAsText(x)})
+    f.onchange= e => {
+	Array.from(f.files).forEach( fi => {
+	    let fun = fi.name.endsWith(".json") ? loadJson : loadString
+	    fi.text().then(t => fun( t )).then( loadObj => loadObj.submitter(swa) )
+	})
     }
     f.click()
 }
 
-function loadAndSubmit(s, swa = true){
-    loadString(s).submiter(swa)
-}
 
-document.getElementById("local-loader").onclick=()=>fReader(loadAndSubmit)
-document.getElementById("local-list").onclick=()=>fReader(loadAndSubmit, false)
+document.getElementById("local-loader").onclick = e => fReader( true )
+document.getElementById("local-list").onclick = e => fReader(false)
 
 
 function refreshRedundant(){
@@ -171,11 +177,11 @@ function getTitle( ) {
     var   mainString = document.getElementById("maininput").value
     var  l = mainString.replace(/^[\s\n]+|[\s\n]+$/g, '').split("\n")
     if ( l.length <= 0 ) l = [ "Milky-Way welcomes you." ]
-    let  title = l[ l.length - 1 ].replace(/^[\s\n]+|[\s\n]+$/g, '').slice(0, 25).replace(/[\s\n]+$/g, '')
+    let  title = l[ l.length - 1 ].replace(/^[\s\n]+|[\s\n]+$/g, '').slice(0, 30).replace(/[\s\n]+$/g, '')
     return title
 }
 
-function refreshChangeable(){
+function refreshChangeableMilkyway(){
     var head = document.getElementById("changeable-head")
     var mainString = document.getElementById("maininput").value
 
@@ -188,13 +194,16 @@ function refreshChangeable(){
     window.cookin(decodeURIComponent(reviewLocation))
 }
 
+function refreshChangeable() {
+    saveJson( true );
+}
 
 function fillIn(nLast, n, l, s, label="word-filler"){
     var insThis = document.createElement("span")
     var orgWord=s.slice(n,n+l)
     insThis.className=label
-    insThis.id=label+"-"+n
-    insThis.innerHTML=orgWord
+    insThis.id = label + "-" + n
+    insThis.innerHTML = orgWord
     var preWord = s.slice(nLast, n).replace(/</g, "《").replace(/>/g, "》")
     var s1 = preWord + insThis.outerHTML
     var res = new Object()
@@ -228,13 +237,13 @@ function fillAllLabeled(s, words){
     var res = new Object()
     var wordList = []
     var sorted = words.sort((a,b)=>(a[0]>=b[0]))
-    var nLast=0
-    var s1=""
+    var nLast = 0
+    var s1 = ""
     for (var i in sorted){
 	var charHead = sorted[i][0]
 	var charLength = sorted[i][1]
-	var voc= sorted[i][2]
-	var label=sorted[i][3]
+	var voc = sorted[i][2]
+	var label = sorted[i][3]
 	var iRes
 	if (label)
 	    iRes=fillIn(nLast, charHead, charLength, s, label)
@@ -251,7 +260,7 @@ function fillAllLabeled(s, words){
     wordDict=new Object()
     for (w of wordList)
 	wordDict[w.objId] = w
-    res.wordDict=wordDict
+    res.wordDict = wordDict
     return res;
 }
 
@@ -277,7 +286,7 @@ function useRule(s, r, st=[], last=new Object()){
 	var sHead = s.slice(0, s.length-1)
 
 	var r0 = r[0]
-	if (r0==";")
+	if (r0 == ";")
 	    return s;
 	if (r0 == "-"){
             st.push(ss)
@@ -394,7 +403,7 @@ function sendText(do_jump=true, removeDup=remove_dup){
     s=s.replace(/([a-zA-Z]+)+-\n([a-zA-Z]+)/g, "$1$2\n")
     if (do_jump){
 	demo.scrollIntoView()
-	demo.style.backgroundImage="url(\"" + baseServer + "/text-faces/?article="+encodeURIComponent(s)+"&redundantList="+encodeURIComponent(encodeURIComponent(JSON.stringify(redundantList)))+"__large.png\")"
+	demo.style.backgroundImage="url(\"" + baseServer + "/text-faces/?styleinfo="+encodeURIComponent(saveJson(false))+"&large.png\")"
 	refreshChangeable()
     }
     state_in_excise=false
@@ -409,7 +418,7 @@ function sendText(do_jump=true, removeDup=remove_dup){
 	refineList()
 
 
-//    for (var o of fillObjs){
+    //    for (var o of fillObjs){
     fillObjs.forEach(o => o.onmousedown = function(){
 	currentFill_1 = fillObjs.findIndex(e=>e==this)
 	if (currentFill_1 >= 0)
@@ -418,7 +427,7 @@ function sendText(do_jump=true, removeDup=remove_dup){
 
     } )
 
-	//o.onmouseup = function(){var t = this.offsetTop - this.parentNode.offsetTop; console.log(t); demo.parentNode.scrollTop=t-100}
+    //o.onmouseup = function(){var t = this.offsetTop - this.parentNode.offsetTop; console.log(t); demo.parentNode.scrollTop=t-100}
     
     for (var o of document.getElementsByClassName("word-filler-dup")){
 	o.onmousedown = function (){elemExplain(this, false)}
@@ -539,7 +548,7 @@ function elemFill(elem, s){
     var inText = info.inText
     var covered  =  tailCover(inText)
     elem.innerHTML =  s // + covered
-       if (s == inText.toLowerCase()){
+    if (s == inText.toLowerCase()){
 	elemModify(elem)
 	elemExplain(elem, false)
     }
@@ -763,7 +772,7 @@ function listWords(excludeLess=true){
     res = ""
     for (w of words){
 	var r = document.createElement("p")
-	var info= elemInfo(w)
+	var info = elemInfo(w)
 	wordSet.push(info.voc)
 	w.innerHTML=info.voc
 	w.id += "-exp";
@@ -782,7 +791,7 @@ function listWords(excludeLess=true){
 	    oHead.onmousedown = () => {
 		[...demo.getElementsByClassName("word-filler-current")].forEach(e=>e.className="word-filler")
 		elemBring(o, 80, false)
-	//	elemBringMinor(o, 10)
+		//	elemBringMinor(o, 10)
 		wordInfo = elemInfo(o)
 		wordInfo.audio.play()
 		word2board(wordInfo.voc)
@@ -802,7 +811,7 @@ function listWords(excludeLess=true){
     headDiv.appendChild(document.createElement("br"))
     ws2head(words2)
 
-//    document.getElementById("explain-head").innerHTML=words1.map(e => elemInfo(e).voc).sort().join(" ") + "<br>" + words2.map(e=>elemInfo(e).voc).sort().join(" ")
+    //    document.getElementById("explain-head").innerHTML=words1.map(e => elemInfo(e).voc).sort().join(" ") + "<br>" + words2.map(e=>elemInfo(e).voc).sort().join(" ")
 
     document.getElementById("explain-area").innerHTML=res
 

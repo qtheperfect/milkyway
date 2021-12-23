@@ -52,30 +52,32 @@ else if (cookable.length <= 5 && cookedRecords[0].length>0){
     cookable = cookedRecords[0]
 }
 if (cookable.length>5) {
-    window.cookout=f=>f(cookable)
+    window.cookout = f => f(cookable)
 }
 
+window.currentThemeIndex = 0
 function changeTheme(themeNum  = -1){
-    var themeList = [
+    const themeList = [
 	{noter:"Switch To DARK Theme", href:"app/milkyway-light.css"},
 	{noter:"Switch To LIGHT Theme", href:"app/milkyway-dark.css"}
     ]
-    var css = document.getElementById("overall-style")
-    var styleButton = document.getElementById("overall-restyle")
-    var currentThemeIndex = styleButton.attributes["currentThemeIndex"]
-    currentThemeIndex = currentThemeIndex ? parseFloat(currentThemeIndex.value) : 1
+    let css = document.getElementById("overall-style")
+    let styleButton = document.getElementById("overall-restyle")
+    let last = styleButton.attributes["currentThemeIndex"]
+    window.currentThemeIndex = last ? parseFloat(last.value) : 1
 
-    var tmNew = ( themeNum >= 0 ? themeNum : (currentThemeIndex + 1) ) % themeList.length
+    let tmNew = ( themeNum >= 0 ? themeNum : (window.currentThemeIndex + 1) ) % themeList.length
     
     if (! themeList[tmNew]) {
 	console.log(`Error in theme change to ${tmNew}`)
 	return
     }
     else
-	console.log(`Theme switched to ${tmNew} replacing ${currentThemeIndex}`)
+	console.log(`Theme switched to ${tmNew} replacing ${window.currentThemeIndex}`)
     
     styleButton.value = themeList[tmNew].noter
     styleButton.onclick = e => changeTheme(-1)
     css.href = themeList[tmNew].href
     styleButton.setAttribute("currentThemeIndex", tmNew)
+    window.currentThemeIndex = tmNew
 }
