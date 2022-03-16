@@ -7,6 +7,7 @@
 - *利用英文语境迅速建立词汇深度理解记忆的神奇工具*
 - *乘英文語境之便令閣下熟習辭彙且通達理解之神妙利器*
 - *コンテキストを使用した迅速かつ効率的なオンライン英語語彙記憶魔法ツール*
+- *Практика вивчення англійської лексики на основі контексту*
 - *컨텍스트를 사용하는 빠르고 효율적인 온라인 영어 어휘 메모리 마법 도구*
 - *Быстрый и эффективный онлайн-инструмент для запоминания английского словаря с помощью контекста*
 - *أداة سحرية للذاكرة عبر الإنترنت سريعة وفعالة باستخدام السياق*
@@ -14,7 +15,7 @@
 
 * Overview
 
-[[./index.html][Milkyway-Cloze]] is a web application as well as a novel learning method for vocabulary development, which 
+[[./index.html][Milkyway-Cloze]] is a web application as well as a novel learning method of vocabulary development, which 
 
 + *Extracts _ONLINE_  the recommended vocabulary worth learning from any article provided;*
 

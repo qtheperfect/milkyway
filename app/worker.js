@@ -127,9 +127,14 @@ function saveJson( affectSaver = true ) {
 }
 
 
-window.cookout((s)=>{
-    if (s.startsWith("?")) loadString(s).submitter()
-    else loadJson(s).submitter();
+window.cookout(function (s){
+    try {
+	if (s.startsWith("?")) loadString(s).submitter()
+	else loadJson(s).submitter();
+    } catch {
+	console.log(s);
+	console.log(" ^^^ The cookie above is flawed ^^^ ");
+    }
 })
 
 
