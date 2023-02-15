@@ -25,7 +25,7 @@ var ruleArray=[
 
     "-y-l", //likely -> like
     "-y-l-i----$$$$+y", // luckily -> lucky
-    "-y-l-a-c-i$$", // dramatically -> dramatic 
+    "-y-l-l-a-c-i$$", // dramatically -> dramatic 
     "-y-l$+e", // gently-> gentle 
 
     "-r-e$",//__bijiaoji
@@ -37,24 +37,27 @@ var ruleArray=[
     "-t-s-e-i+y",
     "-t-s-e-%2-%s-%1$$",
 
-    "-s-r-e$", // workers->work
-    "-s-r-e",
-    "-s-r-e-i+y",
-    "-s-r-e-%2-%2-%1$$",
+    "-s-r-e$", // practicers -> practice
+    "-s-r-e", // workers->work
+    "-s-r-e-i+y", // purifiers -> purify
+    "-s-r-e-%2-%s-%1$$", // putters -> put
+
+    "-n-o-i-%2$", // invention -> invent
+    "-n-o-i-%2$+e", // fascination -> fascinate
+    "-n-o-i-%2-a-%2$+e", // limitation -> limite
+    "-n-o-i-%2-i-%2$+e",// competition -> compete
+    "-s-n-o-i-%2+e$", // associations -> associate
+    "-s-n-o-i-%2$", // suggestions -> suggest
 
     "-c-i-%2$",//prophetic -> prophet
-    "-n-o-i-%2$", // invention -> invent
-    "-n-o-i-%2-a-%2$+e", // limitation -> limite
-    "-n-o-i-t-i-%2$+e",// competition -> compete
-
-    "-l-a-c$", // historical->historic
-    "-l-a-c$+e",// practical->practice
+    "-l-a-%2$+e",// practical->practice
+    "-l-a-%2$", // historical->historic
     "-y-t-i-%2$", // originality->original
-    "-e-v-i-t-----$$$$$$", // subjective -> subject
     "-e-v-i-t$+e-----$$$$$",  // generative -> generate
-    "-e-v-i-t-i-%2%+e", // competitive -> compete
+    "-e-v-i-t-----$$$$$$", // subjective -> subject
+    "-e-v-i-t-%1-%2$+e", // competitive -> compete
     "-s-s-e-n----$$$$", // plainness -> plain
-    "-t-n-e-m" // government -> govern
+    "-t-n-e-m", // government -> govern
 ]
 
 

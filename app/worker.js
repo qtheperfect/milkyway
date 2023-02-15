@@ -209,33 +209,13 @@ function fillIn(nLast, n, l, s, label="word-filler"){
     insThis.className=label
     insThis.id = label + "-" + n
     insThis.innerHTML = orgWord
-    var preWord = s.slice(nLast, n).replace(/</g, "《").replace(/>/g, "》")
+    var preWord = s.slice(nLast, n).replace(/</g, "＜").replace(/>/g, "＞").replace(/&/g, "＆")
     var s1 = preWord + insThis.outerHTML
     var res = new Object()
     res.objId = insThis.id
     res.inText=orgWord
     res.enlonged = s1
     return res
-}
-function fillAll(s, words){
-    var res = new Object()
-    res.wordList = []
-    var sorted = words.sort((a,b)=>(a[0]>=b[0]) ? 1 : -1)
-    var nLast=0
-    var s1=""
-    for (var i in sorted){
-	var n = sorted[i][0]
-	var l = sorted[i][1]
-	var wd = sorted[i][2]
-	var iRes = fillIn(nLast, n, l, s)
-	s1 = s1 + iRes.enlonged
-	delete iRes.enlonged
-	res.wordList.push(iRes)
-	nLast=n + l
-    }
-    res.enlonged = s1 + s.slice(nLast)
-    res.enlonged = res.enlonged.split("\n").join("<br>")
-    return res;
 }
 // fillAll with labels...
 function fillAllLabeled(s, words){
@@ -259,7 +239,8 @@ function fillAllLabeled(s, words){
 	wordList.push(iRes)
 	nLast= charHead + charLength
     }
-    res.enlonged = s1 + s.slice(nLast)
+    let remaintxt = s.slice(nLast).replace(/</g, "＜").replace(/>/g, "＞").replace(/&/g, "＆")
+    res.enlonged = s1 + remaintxt
     res.enlonged = res.enlonged.split("\n").join("<br>")
 
     wordDict=new Object()
@@ -410,6 +391,7 @@ function sendText(do_jump=true, removeDup=remove_dup){
 	demo.scrollIntoView()
 	demo.style.backgroundImage="url(\"" + baseServer + "/text-faces/?styleinfo="+encodeURIComponent(saveJson(false))+"&large.png\")"
 	refreshChangeable()
+    state_in_excise = false
     }
     state_in_excise=false
     var words = allWords(s)

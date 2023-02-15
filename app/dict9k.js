@@ -6956,6 +6956,7 @@
  dict9k["scarp"] = {ipa:"[ska:p]", def:"n.\n悬崖，陡坡"};
  dict9k["scathe"] = {ipa:"[skeið]", def:"n./v.\n损害；烧伤，焦炭；严厉批评"};
  dict9k["sceptical"] = {ipa:"['skeptikəl]", def:"adj.\n怀疑的，不相信的"};
+ dict9k["skeptical"] = {ipa:"['skeptikəl]", def:"adj.\n怀疑的，不相信的"};
  dict9k["scintillate"] = {ipa:"['sintileit]", def:"v.\n闪烁；（谈吐）流露机智"};
  dict9k["scission"] = {ipa:"[ˈsiʒən]", def:"n.\n切断，分离，分裂"};
  dict9k["scooter"] = {ipa:"[ˈsku:tə]", def:"n.\n滑行车，踏板车"};
