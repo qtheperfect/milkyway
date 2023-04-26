@@ -7,15 +7,39 @@ table, th{
   border-bottom: 1px dashed;
   text-align:center;
 }
+
 td {
   border-left: 1px dashed;
   border-bottom: 1px dashed;
   text-align:center;
 }
+
+::-webkit-scrollbar {
+    background-color: #443322;
+    width: 5px;
+    height: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #88773399;
+}
+
+
+div::-webkit-scrollbar {
+    background-color: #554433;
+    width: 5px;
+    height: 5px;
+}
+
+div::-webkit-scrollbar-thumb {
+    background-color: #cc5544;
+}
+
 /* ===================================================================== */
 
 .body{
     margin:0px;
+    overflow-x:auto;
 }
 
 #maininput {
