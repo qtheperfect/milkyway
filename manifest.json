@@ -1,18 +1,26 @@
 {
-    "manifest_version":2,
+    "manifest_version":3,
     "name":"MilkyWay Cloze",
-    "description":"An English learning program which develops your vocabulary from ANY context of articles you familiar with, containing an AI-aided vocabulary refiner associated with a cloze tester, which commences revolutionarily convenience in language learning", 
+    "description":"An English learning program which develops your vocabulary from ANY context of articles you familiar with. A cloze exercise aimed at self vocabulary building is generated from the given text, which can be pasted inside the web or loaded from an older practice record.", 
     "version":"2.0",
-    "web_accessible_resources":["app/*", "inplug/*", "audio/*",  "index.html"],
-    "content_security_policy": "default-src 'self'; script-src 'self' 'sha256-rajK2rwHwasQh442emJY+Qtk/15S6X9XHbluQW7jSlw=' 'sha256-7H8OQKIzpa8HgDbseeWUfZOyISASxYcMJNlU7CZjmys='; ",
+    "web_accessible_resources":[{
+	"resources": ["app/*", "inplug/*", "audio/*",  "index.html"],
+	"matches": [
+	    "<all_urls>"
+	]
+    }],
+    "content_security_policy": {
+	"extension_pages": "default-src 'self'; script-src 'self'"
+    },
     "permissions":["storage", "clipboard"],
-//    "content_scripts":[
-//	{ "matches":["<all_urls>"],
-//	  "js":["inplug/chcontent.js"]
-//	}],
-    "browser_action":{},
+    "action":{
+	"default_icon": {
+	    "16": "/favicon.ico"
+	}
+    },
     "background":{
-	"scripts":["inplug/background.js"]
+	"service_worker": "inplug/background.js",
+	"scripts": ["inplug/background.js"]
     },
     "icons":{"128":"inplug/favicon.ico.png"}
 }
